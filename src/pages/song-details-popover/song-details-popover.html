@@ -1,0 +1,6 @@
+<ion-list radio-group [(ngModel)]="key" (ionChange)="keyValueChange()" class="popover-page">
+  <ion-item *ngFor="let key of keysList">
+    <ion-badge item-right>{{ key }}</ion-badge>
+    <ion-radio value="{{ key }}"></ion-radio>
+  </ion-item>
+</ion-list>
