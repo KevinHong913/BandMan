@@ -6,10 +6,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { Ng2ChordTransposeModule } from 'ng2-chord-transpose';
 
-import { SongsPage } from '../pages/songs/songs';
 import { TabsPage } from '../pages/tabs/tabs';
-import { SongDetailsPage } from '../pages/song-details/song-details';
-import { SongDetailsPopover } from '../pages/song-details-popover/song-details-popover';
 
 import { Backand } from '../providers/backand';
 
@@ -27,10 +24,7 @@ const cloudSettings: CloudSettings = {
 @NgModule({
   declarations: [
     MyApp,
-    SongsPage,
-    TabsPage,
-    SongDetailsPage,
-    SongDetailsPopover
+    TabsPage
   ],
   imports: [
     HttpModule,
@@ -44,10 +38,7 @@ const cloudSettings: CloudSettings = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    SongsPage,
-    SongDetailsPage,
     TabsPage,
-    SongDetailsPopover
   ],
   providers: [
     StatusBar,

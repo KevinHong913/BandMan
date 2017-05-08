@@ -16,7 +16,7 @@ export class SongsPage implements OnInit {
   }
 
   goToSong(songId: number): void {
-    this.navCtrl.push(SongDetailsPage, {songId: songId});
+    this.navCtrl.push('SongDetailsPage', {songId: songId});
   }
 
   ionViewDidLoad() {

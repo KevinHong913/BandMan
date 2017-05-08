@@ -27,7 +27,7 @@ export class SongDetailsPage implements OnInit{
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create(SongDetailsPopover, {key: this.song.key});
+    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.key});
     popover.present({
       ev: event
     });

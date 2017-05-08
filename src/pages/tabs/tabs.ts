@@ -7,7 +7,7 @@ import { SongsPage } from '../songs/songs';
 })
 export class TabsPage {
 
-  tab1Root = SongsPage;
+  tab1Root = 'SongsPage';
   // tab2Root = AboutPage;
   // tab3Root = ContactPage;
 
