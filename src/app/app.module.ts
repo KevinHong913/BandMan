@@ -9,6 +9,7 @@ import { Ng2ChordTransposeModule } from 'ng2-chord-transpose';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { Backand } from '../providers/backand';
+import { BackandService } from '@backand/angular2-sdk';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -44,6 +45,7 @@ const cloudSettings: CloudSettings = {
     StatusBar,
     SplashScreen,
     Backand,
+    BackandService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
