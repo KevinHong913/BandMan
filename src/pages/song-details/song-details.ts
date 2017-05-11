@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
-import { Backand } from '../../providers/backand';
 import { PopoverController } from 'ionic-angular';
+import { Backand } from '../../providers/backand';
+import { PlaylistService } from '../../providers/playlist';
 import { SongDetailsPopover } from '../song-details-popover/song-details-popover';
-
 import { Song } from '../../models/song';
 
 @IonicPage()
@@ -17,7 +17,8 @@ export class SongDetailsPage implements OnInit{
   originalKey: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private backandService: Backand, public popoverCtrl: PopoverController, public events: Events) {
+              public popoverCtrl: PopoverController, public events: Events,
+              private backandService: Backand, private playlistService: PlaylistService) {
     this.songId = navParams.get('songId');
     this.backandService.getSongById(this.songId)
     .subscribe( response => {
@@ -34,11 +35,25 @@ export class SongDetailsPage implements OnInit{
   }
 
   ngOnInit() {
+
+  }
+
+  ionViewWillEnter() {
+    // keychange in popover
     this.events.subscribe('song:keyChanged', (newKey) => {
-      // user and time are the same arguments passed in `events.publish(user, time)`
       this.song.key = newKey;
       console.log("KEY EVENT", newKey);
     });
+
+    // add to playlist in popover
+    this.events.subscribe('song:addToPlaylist', () => {
+      this.playlistService.addSong(this.song);
+    });
+  }
+
+  ionViewWillUnload() {
+    this.events.unsubscribe('song:keyChanged');
+    this.events.unsubscribe('song:addToPlaylist');
   }
 
 

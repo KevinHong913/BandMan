@@ -14,26 +14,35 @@ import { BackandService, Response } from '@backand/angular2-sdk';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
-  createSuccess = false;
-  registerCredentials = { email: '', password: '' };
-
+  private createSuccess = false;
+  email:string = '';
+  firstName:string = '';
+  lastName:string = '';
+  signUpPassword: string = '';
+  confirmPassword: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private backand: BackandService, private alertCtrl: AlertController) {
   }
 
 
   public register() {
-    // this.backand.register(this.registerCredentials).subscribe(success => {
-    //   if (success) {
-    //     this.createSuccess = true;
-    //     this.showPopup("Success", "Account created.");
-    //   } else {
-    //     this.showPopup("Error", "Problem creating account.");
-    //   }
-    // },
-    //   error => {
-    //     this.showPopup("Error", error);
-    // });
+    if (this.signUpPassword != this.confirmPassword){
+      this.showPopup('Error', 'Passwords should match');
+      return;
+    }
+
+    this.backand.signup(this.firstName, this.lastName, this.email, this.signUpPassword, this.confirmPassword).then(success => {
+      if (success) {
+        this.createSuccess = true;
+        this.showPopup("Success", "Account created.");
+      } else {
+        this.showPopup("Error", "Problem creating account.");
+      }
+    },
+      error => {
+        console.log(error);
+        this.showPopup("Error", error);
+    });
   }
 
   showPopup(title, text) {

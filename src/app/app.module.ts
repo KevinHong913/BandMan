@@ -1,15 +1,18 @@
-import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { Ng2ChordTransposeModule } from 'ng2-chord-transpose';
 
-import { TabsPage } from '../pages/tabs/tabs';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { IonicStorageModule } from '@ionic/storage';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { Backand } from '../providers/backand';
 import { BackandService } from '@backand/angular2-sdk';
+import { PlaylistService } from '../providers/playlist';
+import { Ng2ChordTransposeModule } from 'ng2-chord-transpose';
+
+import { MyApp } from './app.component';
+import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -34,7 +37,8 @@ const cloudSettings: CloudSettings = {
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: true,
     }),
-    CloudModule.forRoot(cloudSettings)
+    CloudModule.forRoot(cloudSettings),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -46,6 +50,7 @@ const cloudSettings: CloudSettings = {
     SplashScreen,
     Backand,
     BackandService,
+    PlaylistService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

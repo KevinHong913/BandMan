@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { BackandService, Response } from '@backand/angular2-sdk';
+import { TabsPage } from '../tabs/tabs';
 
 
 /**
@@ -16,9 +17,40 @@ import { BackandService, Response } from '@backand/angular2-sdk';
 })
 export class LoginPage {
   loading: Loading;
-  registerCredentials = { email: '', password: '' };
+  username:string = 'marian.pan@gmail.com';
+  password:string = 'superman';
+  auth_type:string = "Token";
+  is_auth_error:boolean = false;
+  auth_status:string = null;
+  loggedInUser: string = '';
+
+
+  oldPassword: string = '';
+  newPassword: string = '';
+  confirmNewPassword: string = '';
+
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private backand: BackandService, private alertCtrl: AlertController, private loadingCtrl: LoadingController ) {
+    this.backand.user.getUserDetails()
+    .then((data: any) => {
+      console.log(data);
+      if (data.data){
+        this.loggedInUser = data.data.username;
+        this.auth_status = 'OK';
+        this.auth_type = data.data.token_type == 'Anonymous' ? 'Anonymous' : 'Token';
+        this.navCtrl.setRoot(TabsPage);
+      }
+      else{
+       this.auth_status = null;
+      }
+    },
+    (err: any) => {
+      console.log(err);
+      this.loggedInUser = null;
+      this.auth_status = null;
+      this.auth_type = null;
+    });
   }
 
   public createAccount() {
@@ -28,8 +60,25 @@ export class LoginPage {
   public login() {
     this.showLoading();
 
-    /* some login here */
-
+    this.backand.signin(this.username, this.password)
+        .then((data: any) => {
+            console.log(data);
+            this.auth_status = 'OK';
+            this.is_auth_error = false;
+            this.loggedInUser = data.data.username;
+            this.username = '';
+            this.password = '';
+            this.navCtrl.setRoot(TabsPage);
+        },
+        (error: any) => {
+            console.log(error);
+            let errorMessage: string = error.data.error_description;
+            this.auth_status = `Error: ${errorMessage}`;
+            this.is_auth_error = true;
+            console.log(errorMessage)
+            this.auth_status = 'ERROR';
+        }
+    );
   }
 
   showLoading() {
@@ -48,6 +97,5 @@ export class LoginPage {
       subTitle: text,
       buttons: ['OK']
     });
-    alert.present(prompt);
   }
 }

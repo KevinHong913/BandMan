@@ -32,6 +32,11 @@ export class SongDetailsPopover {
     console.log("[popover] key: ", this.key);
   }
 
+  addToPlaylist() {
+    this.events.publish('song:addToPlaylist');
+    console.log("[popover] Event: addToPlaylist");
+  }
+
   ngOnInit() {
     if (this.navParams.data) {
       this.key = this.navParams.data.key;
