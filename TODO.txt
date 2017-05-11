@@ -1,0 +1,6 @@
+TODO:
+
+Swipe
+Determine which page (songlist or playlist)
+- subscribe: unsubscribe
+- or send param 'parent' -> "songlist" or "playlist"
