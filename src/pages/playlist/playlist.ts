@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { Song } from '../../models/song';
 import { PlaylistService } from '../../providers/playlist';
 import { ItemSliding } from 'ionic-angular';
@@ -11,12 +11,24 @@ import { ItemSliding } from 'ionic-angular';
 })
 export class PlaylistPage {
   playlist: Song[];
+  listType = 'playlist';
+  currentSongIndex = -1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private playlistService: PlaylistService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private playlistService: PlaylistService, public events: Events) {
   }
 
-  goToSong(songId: number): void {
-    this.navCtrl.push('SongDetailsPage', {songId: songId});
+  navToSongDetail(songId: number, listType: string, options: any = {}): void {
+    let params = {
+      songId: songId,
+      listType: listType
+    };
+    this.navCtrl.push('SongDetailsPage', params, options );
+  }
+
+  goToSong(songId: number, index: number): void {
+    this.currentSongIndex = index;
+    this.navToSongDetail(songId, this.listType);
   }
 
   removeFromPlaylist(index: number, slidingItem: ItemSliding): void {
@@ -24,9 +36,24 @@ export class PlaylistPage {
     slidingItem.close();
   }
 
+  songChangeEvent(): void {
+    this.events.subscribe('song:change', (data) => {
+      if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.playlist.length - 1) {
+        this.currentSongIndex += data.direction;
+        const directionStr = data.direction > 0 ? 'forward' : 'back';
+        this.navToSongDetail(this.playlist[this.currentSongIndex].id, this.listType, {direction: directionStr} );
+        this.navCtrl.remove(data.viewIndex);
+      }
+    });
+  }
+
   ionViewWillEnter() {
     this.playlist = this.playlistService.getPlaylist();
     console.log('GET playlist', this.playlist);
+  }
+
+  ngOnInit() {
+    this.songChangeEvent();
   }
 
 }

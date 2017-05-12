@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding #slidingItem *ngFor="let song of playlist; let i = index">
-      <button ion-item (click)="goToSong(song.id)">
+      <button ion-item (click)="goToSong(song.id, i)">
         <h2>{{ song.title }}</h2>
         <ion-badge item-right>{{ song.tempo }}</ion-badge>
       </button>

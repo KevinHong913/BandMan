@@ -9,6 +9,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Backand } from '../providers/backand';
 import { BackandService } from '@backand/angular2-sdk';
 import { PlaylistService } from '../providers/playlist';
+import { UtilService } from '../providers/util-service';
 import { Ng2ChordTransposeModule } from 'ng2-chord-transpose';
 
 import { MyApp } from './app.component';
@@ -51,6 +52,7 @@ const cloudSettings: CloudSettings = {
     Backand,
     BackandService,
     PlaylistService,
+    UtilService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
