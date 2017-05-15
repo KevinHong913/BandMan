@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
-import { BackandService, Response } from '@backand/angular2-sdk';
+import { BackandService } from '@backand/angular2-sdk';
 import { TabsPage } from '../tabs/tabs';
 
 
@@ -17,9 +17,11 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class LoginPage {
   loading: Loading;
-  username:string = 'marian.pan@gmail.com';
-  password:string = 'superman';
-  auth_type:string = "Token";
+  username: string = '';
+  password: string = '';
+  // username:string = 'marian.pan@gmail.com';
+  // password:string = 'superman';
+  auth_type:string = 'Token';
   is_auth_error:boolean = false;
   auth_status:string = null;
   loggedInUser: string = '';

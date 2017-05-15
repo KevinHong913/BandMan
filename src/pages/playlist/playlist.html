@@ -19,5 +19,9 @@
         <button ion-button color="danger" (click)="removeFromPlaylist(i, slidingItem)">Delete</button>
       </ion-item-options>
     </ion-item-sliding>
+
+    <ion-item *ngIf="playlist?.length === 0">
+      <h2 text-center>The playlist is empty. Go add some song to playlist!</h2>
+    </ion-item>
   </ion-list>
 </ion-content>

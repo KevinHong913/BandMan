@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { BackandService, Response } from '@backand/angular2-sdk';
+import { BackandService } from '@backand/angular2-sdk';
 
 /**
  * Generated class for the Register page.

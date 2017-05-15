@@ -1,14 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { Ng2ChordTransposeService } from 'ng2-chord-transpose';
-import { ViewController } from 'ionic-angular';
 
-/**
- * Generated class for the SongDetailsPopover page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-song-details-popover',

@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { PlaylistService } from '../../providers/playlist';
-import { SongDetailsPopover } from '../song-details-popover/song-details-popover';
 import { Song } from '../../models/song';
 
 @IonicPage()
@@ -11,7 +10,7 @@ import { Song } from '../../models/song';
   selector: 'page-song-details',
   templateUrl: 'song-details.html',
 })
-export class SongDetailsPage implements OnInit, AfterViewInit {
+export class SongDetailsPage implements AfterViewInit {
   private songId: number;
   listType: string;
   song: Song;

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SongsPage } from '../songs/songs';
 
 @Component({
   templateUrl: 'tabs.html'
