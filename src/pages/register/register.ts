@@ -22,6 +22,7 @@ export class RegisterPage {
   confirmPassword: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private backand: BackandService, private alertCtrl: AlertController) {
+    console.log('REGISTER');
   }
 
 

@@ -18,17 +18,18 @@ export class PlaylistPage {
               private playlistService: PlaylistService, public events: Events) {
   }
 
-  navToSongDetail(songId: number, listType: string, options: any = {}): void {
+  navToSongDetail(songId: number, listType: string, currentKey?: string, options: any = {}): void {
     let params = {
       songId: songId,
-      listType: listType
+      listType: listType,
+      currentKey: currentKey
     };
     this.navCtrl.push('SongDetailsPage', params, options );
   }
 
-  goToSong(songId: number, index: number): void {
+  goToSong(song: Song, index: number): void {
     this.currentSongIndex = index;
-    this.navToSongDetail(songId, this.listType);
+    this.navToSongDetail(song.id, this.listType, song.currentKey);
   }
 
   removeFromPlaylist(index: number, slidingItem: ItemSliding): void {
@@ -41,7 +42,7 @@ export class PlaylistPage {
       if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.playlist.length - 1) {
         this.currentSongIndex += data.direction;
         const directionStr = data.direction > 0 ? 'forward' : 'back';
-        this.navToSongDetail(this.playlist[this.currentSongIndex].id, this.listType, {direction: directionStr} );
+        this.navToSongDetail(this.playlist[this.currentSongIndex].id, this.listType, null, {direction: directionStr} );
         this.navCtrl.remove(data.viewIndex);
       }
     });

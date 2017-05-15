@@ -6,6 +6,7 @@ export interface Song {
   artist: string;
   tempo: number;
   key: string;
+  currentKey: string;
   sections: SongSection[];
   youtube: string;
   createdAt: string;

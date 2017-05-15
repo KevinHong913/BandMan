@@ -20,6 +20,6 @@
 
 <ion-content padding>
   <div *ngIf="song" (swipe)="changeSong($event)">
-    <ng2-chord-transpose [chordSections]='song?.sections' [key]='song?.key' showUpDown="false"></ng2-chord-transpose>
+    <ng2-chord-transpose [chordSections]='song?.sections' [key]='song?.currentKey' showUpDown="false"></ng2-chord-transpose>
   </div>
 </ion-content>

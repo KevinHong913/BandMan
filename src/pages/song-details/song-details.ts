@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
@@ -11,11 +11,12 @@ import { Song } from '../../models/song';
   selector: 'page-song-details',
   templateUrl: 'song-details.html',
 })
-export class SongDetailsPage implements OnInit{
+export class SongDetailsPage implements OnInit, AfterViewInit {
   private songId: number;
   listType: string;
   song: Song;
   originalKey: string;
+  currentKey: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
@@ -23,28 +24,30 @@ export class SongDetailsPage implements OnInit{
               private viewCtrl: ViewController) {
     this.songId = navParams.get('songId');
     this.listType = navParams.get('listType');
-
-    this.backandService.getSongById(this.songId)
-    .subscribe( response => {
-      this.song = response;
-      this.originalKey = response.key;
-    });
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.key});
+    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.currentKey} );
     popover.present({
       ev: event
     });
   }
 
   ngOnInit() {
+    this.backandService.getSongById(this.songId)
+    .subscribe( response => {
+      this.song = response;
+      this.song.currentKey = response.key;
+    });
+  }
+
+  ngAfterViewInit() {
 
   }
 
   changeSong(event): void {
     let direction = 0;
-    if(Math.abs(event.deltaX) < 300) { return; }
+    if(Math.abs(event.deltaX) < 150) { return; }
 
     if(event.direction === 2) { // swipe right
       direction = 1
@@ -63,7 +66,7 @@ export class SongDetailsPage implements OnInit{
   ionViewWillEnter() {
     // keychange in popover
     this.events.subscribe('song:keyChanged', (newKey) => {
-      this.song.key = newKey;
+      this.song.currentKey = newKey;
       console.log("KEY EVENT", newKey);
     });
 

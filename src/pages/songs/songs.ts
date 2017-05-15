@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { Song } from '../../models/song';
 import { PlaylistService } from '../../providers/playlist';
 import { ItemSliding } from 'ionic-angular';
-import { UtilService } from '../../providers/util-service';
 
 @IonicPage()
 @Component({
@@ -18,7 +17,7 @@ export class SongsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private backandService: Backand, public playlistService: PlaylistService,
-              public events: Events, public utilService: UtilService ) {
+              public events: Events) {
   }
 
   navToSongDetail(songId: number, listType: string, options: any = {}): void {
