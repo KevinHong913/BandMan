@@ -17,10 +17,8 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class LoginPage {
   loading: Loading;
-  username: string = '';
-  password: string = '';
-  // username:string = 'marian.pan@gmail.com';
-  // password:string = 'superman';
+  username: string = 'jesus.christ@heaven.gov';
+  password: string = 'godisgood';
   auth_type:string = 'Token';
   is_auth_error:boolean = false;
   auth_status:string = null;
