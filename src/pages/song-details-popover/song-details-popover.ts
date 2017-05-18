@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
 import { Ng2ChordTransposeService } from 'ng2-chord-transpose';
 
 @IonicPage()
@@ -12,12 +12,9 @@ export class SongDetailsPopover {
   key: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private ng2ChordTransposeService: Ng2ChordTransposeService, public events: Events) {
+              private ng2ChordTransposeService: Ng2ChordTransposeService, public events: Events,
+              public viewCtrl: ViewController) {
     this.keysList = ng2ChordTransposeService.getKeysList()
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SongDetailsPopover');
   }
 
   keyValueChange(key) {
@@ -27,7 +24,7 @@ export class SongDetailsPopover {
 
   addToPlaylist() {
     this.events.publish('song:addToPlaylist');
-    console.log("[popover] Event: addToPlaylist");
+    this.viewCtrl.dismiss();
   }
 
   ngOnInit() {

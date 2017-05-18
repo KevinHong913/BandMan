@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading, Events } from 'ionic-angular';
 import { BackandService } from '@backand/angular2-sdk';
 import { TabsPage } from '../tabs/tabs';
 
@@ -31,7 +31,9 @@ export class LoginPage {
 
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private backand: BackandService, private alertCtrl: AlertController, private loadingCtrl: LoadingController ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private backand: BackandService, private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController, public events: Events ) {
     this.backand.user.getUserDetails()
     .then((data: any) => {
       console.log(data);
@@ -61,23 +63,23 @@ export class LoginPage {
     this.showLoading();
 
     this.backand.signin(this.username, this.password)
-        .then((data: any) => {
-            console.log(data);
-            this.auth_status = 'OK';
-            this.is_auth_error = false;
-            this.loggedInUser = data.data.username;
-            this.username = '';
-            this.password = '';
-            this.navCtrl.setRoot(TabsPage);
-        },
-        (error: any) => {
-            console.log(error);
-            let errorMessage: string = error.data.error_description;
-            this.auth_status = `Error: ${errorMessage}`;
-            this.is_auth_error = true;
-            console.log(errorMessage)
-            this.auth_status = 'ERROR';
-        }
+    .then((data: any) => {
+      console.log(data);
+      this.auth_status = 'OK';
+      this.is_auth_error = false;
+      this.loggedInUser = data.data.username;
+      this.username = '';
+      this.password = '';
+      this.navCtrl.setRoot(TabsPage);
+    },
+    (error: any) => {
+      console.log(error);
+      let errorMessage: string = error.data.error_description;
+      this.auth_status = `Error: ${errorMessage}`;
+      this.is_auth_error = true;
+      console.log(errorMessage)
+      this.auth_status = 'ERROR';
+    }
     );
   }
 
@@ -96,6 +98,22 @@ export class LoginPage {
       title: 'Fail',
       subTitle: text,
       buttons: ['OK']
+    });
+  }
+
+  logout() {
+    this.auth_status = null;
+    this.backand.signout()
+    .then(response => {
+      if(response.status === 200) {
+        this.navCtrl.setRoot('LoginPage');
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.events.subscribe('user:logout', () => {
+      this.logout();
     });
   }
 }

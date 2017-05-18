@@ -7,7 +7,8 @@ export class TabsPage {
 
   tab1Root = 'SongsPage';
   tab2Root = 'PlaylistPage';
-  // tab3Root = ContactPage;
+  // tab3Root = '';
+  tab4Root = 'MorePage';
 
   constructor() {
 
