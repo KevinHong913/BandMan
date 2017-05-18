@@ -13,6 +13,8 @@ export class PlaylistPage {
   playlist: Song[];
   listType = 'playlist';
   currentSongIndex = -1;
+  filteredList: Song[];
+  filter: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private playlistService: PlaylistService, public events: Events) {
@@ -37,6 +39,19 @@ export class PlaylistPage {
     slidingItem.close();
   }
 
+  searchSongs(event: any) {
+    let filter = event.target.value;
+    console.log("FILTER CHANGE", filter);
+    // if the value is an empty string don't filter the items
+    if (filter && filter.trim() !== '') {
+      this.filteredList = this.playlist.filter((song) => {
+        return !filter || (song.title ? ('' + song.title).toLowerCase().indexOf(filter) !== -1 : false);
+      })
+    } else {
+      this.filteredList = this.playlist;
+    }
+  }
+
   songChangeEvent(): void {
     this.events.subscribe('song:change', (data) => {
       if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.playlist.length - 1) {
@@ -50,6 +65,7 @@ export class PlaylistPage {
 
   ionViewWillEnter() {
     this.playlist = this.playlistService.getPlaylist();
+    this.filteredList = this.playlist;
     console.log('GET playlist', this.playlist);
   }
 

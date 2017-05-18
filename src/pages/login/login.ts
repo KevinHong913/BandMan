@@ -24,12 +24,9 @@ export class LoginPage {
   auth_status:string = null;
   loggedInUser: string = '';
 
-
   oldPassword: string = '';
   newPassword: string = '';
   confirmNewPassword: string = '';
-
-
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private backand: BackandService, private alertCtrl: AlertController,
@@ -102,10 +99,10 @@ export class LoginPage {
   }
 
   logout() {
-    this.auth_status = null;
     this.backand.signout()
     .then(response => {
       if(response.status === 200) {
+        this.auth_status = null;
         this.navCtrl.setRoot('LoginPage');
       }
     });

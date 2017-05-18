@@ -8,11 +8,12 @@
 
 
 <ion-content>
+  <ion-searchbar (ionInput)="searchSongs($event)"></ion-searchbar>
   <ion-list>
-    <ion-item-sliding #slidingItem *ngFor="let song of playlist; let i = index">
+    <ion-item-sliding #slidingItem *ngFor="let song of filteredList; let i = index">
       <button ion-item (click)="goToSong(song, i)">
         <h2>{{ song.title }}</h2>
-        <ion-badge item-right>{{ song.tempo }}</ion-badge>
+        <ion-badge item-right *ngIf="song.tempo">{{ song.tempo }} BPM</ion-badge>
       </button>
 
       <ion-item-options side="right">

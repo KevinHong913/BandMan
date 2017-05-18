@@ -17,6 +17,9 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+/* PIPE NOT WORKING... :( */
+import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
+import { SongFilterPipe } from '../pipes/song-filter-pipe';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -28,12 +31,14 @@ const cloudSettings: CloudSettings = {
 @NgModule({
   declarations: [
     MyApp,
-    TabsPage
+    TabsPage,
+    SongFilterPipe,
   ],
   imports: [
     HttpModule,
     BrowserModule,
     Ng2ChordTransposeModule,
+    Ng2FilterPipeModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: true,
     }),
@@ -51,6 +56,7 @@ const cloudSettings: CloudSettings = {
     Backand,
     BackandService,
     PlaylistService,
+    SongFilterPipe,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
