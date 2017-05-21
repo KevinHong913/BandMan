@@ -1,6 +1,14 @@
 
 <ion-list radio-group [(ngModel)]="key" (ionChange)="keyValueChange()" class="popover-page">
   <ion-row>
+    <ion-col>
+      <button (click)="changeFontSize(-1)" ion-item detail-none class="text-button text-smaller">A</button>
+    </ion-col>
+    <ion-col>
+      <button (click)="changeFontSize(1)" ion-item detail-none class="text-button text-larger">A</button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
     <button ion-button full (click)="addToPlaylist()">
        Add to playlist
     </button>

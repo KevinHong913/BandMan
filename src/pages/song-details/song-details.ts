@@ -16,6 +16,7 @@ export class SongDetailsPage implements AfterViewInit {
   song: Song;
   originalKey: string;
   currentKey: string;
+  fontSize = 18;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
@@ -73,11 +74,19 @@ export class SongDetailsPage implements AfterViewInit {
     this.events.subscribe('song:addToPlaylist', () => {
       this.playlistService.addSong(this.song);
     });
+
+    // font size change
+    this.events.subscribe('style:fontSizeChange', (changeSize) => {
+      if(this.fontSize > 10 && this.fontSize < 24) {
+        this.fontSize += changeSize;
+      }
+    });
   }
 
   ionViewWillUnload() {
     this.events.unsubscribe('song:keyChanged');
     this.events.unsubscribe('song:addToPlaylist');
+    this.events.unsubscribe('style:fontSizeChange');
   }
 
 

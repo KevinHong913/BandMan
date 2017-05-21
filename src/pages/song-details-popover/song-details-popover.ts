@@ -10,6 +10,7 @@ import { Ng2ChordTransposeService } from 'ng2-chord-transpose';
 export class SongDetailsPopover {
   keysList: string[];
   key: string;
+  fontSizeChangeUnit = 2;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private ng2ChordTransposeService: Ng2ChordTransposeService, public events: Events,
@@ -25,6 +26,10 @@ export class SongDetailsPopover {
   addToPlaylist() {
     this.events.publish('song:addToPlaylist');
     this.viewCtrl.dismiss();
+  }
+
+  changeFontSize(direction: number) {
+    this.events.publish('style:fontSizeChange', this.fontSizeChangeUnit * direction);
   }
 
   ngOnInit() {
