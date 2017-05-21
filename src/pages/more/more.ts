@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
 
 
 /**
@@ -16,7 +16,7 @@ import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 export class MorePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public events: Events) {
+              public events: Events, public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -24,7 +24,22 @@ export class MorePage {
   }
 
   logout() {
-    this.events.publish('user:logout');
+    this.alertCtrl.create({
+      title: 'Logging out',
+      message: 'Are you sure you want to log out of this account?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {}
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.events.publish('user:logout');
+          }
+        }
+      ]
+    }).present();
   }
 
 }
