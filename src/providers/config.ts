@@ -27,17 +27,22 @@ export class AppConfig {
   getFontSize() {
     return this.fontSize;
   }
+
   subscribeFontSize(): Observable<any> {
     return this.fontSizeSubject.asObservable();
+  }
+
+  setFontSize(newSize: number): void {
+    this.fontSize = newSize;
+    console.log(this.fontSize);
+    this.fontSizeSubject.next(this.fontSize);
+    this.storage.set('fontSize', this.fontSize);
   }
 
   adjustFontSize(delta: number): void {
     let tmpSize = this.fontSize + delta;
     if(tmpSize > 12 && tmpSize < 24) {
-      this.fontSize = tmpSize;
-      console.log(this.fontSize);
-      this.fontSizeSubject.next(this.fontSize);
-      this.storage.set('fontSize', this.fontSize);
+      this.setFontSize(tmpSize);
     }
   }
 

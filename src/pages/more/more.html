@@ -19,7 +19,7 @@
     <ion-list-header>SETTING</ion-list-header>
     <ion-item>
       <ion-label>Default Font Size</ion-label>
-      <ion-select interface="popover" [(ngModel)]="fontSize" (ionChange)="setFontSize()" >
+      <ion-select interface="popover" [(ngModel)]="fontSize" (ionChange)="setFontSize($event)" >
         <ion-option value="12">12</ion-option>
         <ion-option value="14">14</ion-option>
         <ion-option value="16">16</ion-option>

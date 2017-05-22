@@ -27,7 +27,7 @@ export class MorePage {
   }
 
   setFontSize(newSize: number): void {
-    this.appConfig.adjustFontSize(newSize);
+    this.appConfig.setFontSize(Number(newSize));
   }
 
   logout() {
