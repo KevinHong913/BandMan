@@ -10,6 +10,7 @@ import { Backand } from '../providers/backand';
 import { BackandService } from '@backand/angular2-sdk';
 import { PlaylistService } from '../providers/playlist';
 import { Ng2ChordTransposeModule } from 'ng2-chord-transpose';
+import { AppConfig } from '../providers/config';
 
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -57,6 +58,7 @@ const cloudSettings: CloudSettings = {
     BackandService,
     PlaylistService,
     SongFilterPipe,
+    AppConfig,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

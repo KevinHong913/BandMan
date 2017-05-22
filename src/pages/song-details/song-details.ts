@@ -4,6 +4,7 @@ import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { PlaylistService } from '../../providers/playlist';
 import { Song } from '../../models/song';
+import { AppConfig } from '../../providers/config';
 
 @IonicPage()
 @Component({
@@ -16,12 +17,12 @@ export class SongDetailsPage implements AfterViewInit {
   song: Song;
   originalKey: string;
   currentKey: string;
-  fontSize = 18;
+  fontSize: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
               private backandService: Backand, private playlistService: PlaylistService,
-              private viewCtrl: ViewController) {
+              private viewCtrl: ViewController, public AppConfig: AppConfig) {
     this.songId = navParams.get('songId');
     this.listType = navParams.get('listType');
   }
@@ -34,6 +35,11 @@ export class SongDetailsPage implements AfterViewInit {
   }
 
   ngOnInit() {
+
+    this.AppConfig.subscribeFontSize().subscribe(size => {
+      this.fontSize = size;
+    });
+
     this.backandService.getSongById(this.songId)
     .subscribe( response => {
       this.song = response;
@@ -64,6 +70,9 @@ export class SongDetailsPage implements AfterViewInit {
   }
 
   ionViewWillEnter() {
+    // set default font size
+    this.fontSize = this.AppConfig.getFontSize();
+
     // keychange in popover
     this.events.subscribe('song:keyChanged', (newKey) => {
       this.song.currentKey = newKey;
@@ -76,9 +85,10 @@ export class SongDetailsPage implements AfterViewInit {
     });
 
     // font size change
-    this.events.subscribe('style:fontSizeChange', (changeSize) => {
-      if(this.fontSize > 10 && this.fontSize < 24) {
-        this.fontSize += changeSize;
+    this.events.subscribe('style:fontSizeChange', (delta) => {
+      let tmpSize = this.fontSize + delta;
+      if(tmpSize > 12 && tmpSize < 24) {
+        this.fontSize = tmpSize;
       }
     });
   }

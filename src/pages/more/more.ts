@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
-
+import { AppConfig } from '../../providers/config';
 
 /**
  * Generated class for the More page.
@@ -14,13 +14,20 @@ import { IonicPage, NavController, NavParams, Events, AlertController } from 'io
   templateUrl: 'more.html',
 })
 export class MorePage {
+  fontSize: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public events: Events, public alertCtrl: AlertController) {
+              public events: Events, public alertCtrl: AlertController,
+              public appConfig: AppConfig) {
+    this.fontSize = appConfig.getFontSize();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad More');
+  }
+
+  setFontSize(newSize: number): void {
+    this.appConfig.adjustFontSize(newSize);
   }
 
   logout() {

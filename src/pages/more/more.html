@@ -7,14 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>more</ion-title>
+    <ion-title>More</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
   <ion-list>
+    <ion-list-header>SETTING</ion-list-header>
+    <ion-item>
+      <ion-label>Default Font Size</ion-label>
+      <ion-select interface="popover" [(ngModel)]="fontSize" (ionChange)="setFontSize()" >
+        <ion-option value="12">12</ion-option>
+        <ion-option value="14">14</ion-option>
+        <ion-option value="16">16</ion-option>
+        <ion-option value="18">18</ion-option>
+        <ion-option value="20">20</ion-option>
+        <ion-option value="22">22</ion-option>
+        <ion-option value="24">24</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>ACCOUNT</ion-list-header>
     <ion-item>
       <span (click)="logout()" >Logout</span>
     </ion-item>
