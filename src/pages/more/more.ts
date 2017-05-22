@@ -30,6 +30,25 @@ export class MorePage {
     this.appConfig.setFontSize(Number(newSize));
   }
 
+  onCleanCache(): void {
+    this.alertCtrl.create({
+      title: 'Clear Cache',
+      message: 'Are you sure you want clear the cache?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {}
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.appConfig.clearSongCache();
+          }
+        }
+      ]
+    }).present();
+  }
+
   logout() {
     this.alertCtrl.create({
       title: 'Logging out',

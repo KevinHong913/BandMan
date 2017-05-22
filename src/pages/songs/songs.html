@@ -14,6 +14,10 @@
 
 
 <ion-content>
+  <ion-refresher (ionRefresh)="listRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-searchbar (ionInput)="searchSongs($event)"></ion-searchbar>
   <ion-list>
     <ion-item-sliding #slidingItem *ngFor="let song of filteredList; let i = index">

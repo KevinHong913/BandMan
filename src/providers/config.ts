@@ -11,6 +11,8 @@ export class AppConfig {
   private fontSize: number;
   private fontSizeSubject: Subject<any> = new Subject<any>();
 
+  private cachedSongList: number[];
+
   constructor(public storage: Storage) {
 
     // set font size
@@ -22,6 +24,15 @@ export class AppConfig {
         storage.set('fontSize', this.fontSize);
       }
     });
+
+    this.storage.get('cachedSongList').then((response) => {
+      if(response) {
+        this.cachedSongList = response;
+      } else {
+        this.cachedSongList = [];
+        this.storage.set('cachedSongList', this.cachedSongList);
+      }
+    })
   }
 
   getFontSize() {
@@ -44,6 +55,19 @@ export class AppConfig {
     if(tmpSize > 12 && tmpSize < 24) {
       this.setFontSize(tmpSize);
     }
+  }
+
+  addCachedSong(songId: number): void {
+    this.cachedSongList.push(songId);
+    this.storage.set('cachedSongList', this.cachedSongList);
+  }
+
+  clearSongCache(): void {
+    this.cachedSongList.forEach(id => {
+      this.storage.remove('song:' + id);
+    });
+    this.cachedSongList = [];
+    this.storage.set('cachedSongList', []);
   }
 
 }

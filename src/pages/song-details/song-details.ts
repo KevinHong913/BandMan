@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { PlaylistService } from '../../providers/playlist';
@@ -22,7 +23,8 @@ export class SongDetailsPage implements AfterViewInit {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
               private backandService: Backand, private playlistService: PlaylistService,
-              private viewCtrl: ViewController, public AppConfig: AppConfig) {
+              private viewCtrl: ViewController, public AppConfig: AppConfig,
+              private storage: Storage) {
     this.songId = navParams.get('songId');
     this.listType = navParams.get('listType');
   }
@@ -36,15 +38,19 @@ export class SongDetailsPage implements AfterViewInit {
 
   ngOnInit() {
 
-    this.AppConfig.subscribeFontSize().subscribe(size => {
-      this.fontSize = size;
-    });
-
-    this.backandService.getSongById(this.songId)
-    .subscribe( response => {
-      this.song = response;
-      this.song.currentKey = response.key;
-    });
+    this.storage.get('song:' + this.songId).then(res => {
+      if(res) {
+        this.song = res;
+      this.song.currentKey = res.key;
+      } else {
+        this.backandService.getSongById(this.songId)
+        .subscribe( (response) => {
+          this.song = response;
+          this.song.currentKey = response.key;
+          this.storage.set('song:' + this.songId, response);
+        });
+      }
+    })
   }
 
   ngAfterViewInit() {

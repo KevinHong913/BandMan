@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { Song } from '../../models/song';
 import { PlaylistService } from '../../providers/playlist';
 import { ItemSliding } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -19,7 +20,8 @@ export class SongsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private backandService: Backand, public playlistService: PlaylistService,
-              public events: Events) {
+              public events: Events, private storage: Storage,
+              private alertCtrl: AlertController) {
   }
 
   navToSongDetail(songId: number, listType: string, options: any = {}): void {
@@ -28,6 +30,11 @@ export class SongsPage {
       listType: listType
     };
     this.navCtrl.push('SongDetailsPage', params, options );
+  }
+
+  listRefresh(refresher): void {
+    console.log('LIST REFRESH');
+    this.getSongList(refresher);
   }
 
   goToSong(songId: number, index: number): void {
@@ -40,11 +47,31 @@ export class SongsPage {
     slidingItem.close();
   }
 
-  getSongList(): void {
+  getSongList(refresher?: any): void {
     this.backandService.getSongList()
     .subscribe(response => {
       this.songList = response;
       this.filteredList = response;
+      this.storage.set('songList', this.songList);
+      if(refresher) {
+        refresher.complete();
+      }
+    }, err => {
+      this.alertCtrl.create({
+        title: 'Warning',
+        subTitle: 'Cannot get song list',
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            this.storage.get('songList').then(response => {
+              this.songList = response;
+            })
+            if(refresher) {
+              refresher.cancel();
+            }
+          }
+        }]
+      }).present();
     })
   }
 
@@ -74,10 +101,11 @@ export class SongsPage {
   }
 
   ionViewWillEnter() {
-    this.getSongList();
+
   }
 
   ngOnInit() {
+    this.getSongList();
     this.songChangeEvent();
   }
 
