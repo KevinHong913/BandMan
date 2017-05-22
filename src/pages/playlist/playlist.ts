@@ -45,7 +45,8 @@ export class PlaylistPage {
     // if the value is an empty string don't filter the items
     if (filter && filter.trim() !== '') {
       this.filteredList = this.playlist.filter((song) => {
-        return !filter || (song.title ? ('' + song.title).toLowerCase().indexOf(filter) !== -1 : false);
+        return !filter || (song.title ? ('' + song.title).toLowerCase().indexOf(filter) !== -1 : false)
+         || (song.artist ? ('' + song.artist).toLowerCase().indexOf(filter) !== -1 : false);;
       })
     } else {
       this.filteredList = this.playlist;
