@@ -77,9 +77,9 @@ export class SongsPage {
 
   searchSongs(event: any) {
     let filter = event.target.value;
-    console.log("FILTER CHANGE", filter);
     // if the value is an empty string don't filter the items
     if (filter && filter.trim() !== '') {
+      filter = filter.toLowerCase();
       this.filteredList = this.songList.filter((song) => {
         return !filter || (song.title ? ('' + song.title).toLowerCase().indexOf(filter) !== -1 : false)
          || (song.artist ? ('' + song.artist).toLowerCase().indexOf(filter) !== -1 : false);;
