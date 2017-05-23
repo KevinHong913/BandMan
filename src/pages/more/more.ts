@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  Events,
+  AlertController,
+  ToastController
+} from 'ionic-angular';
 import { AppConfig } from '../../providers/config';
 
-/**
- * Generated class for the More page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-more',
@@ -18,7 +19,7 @@ export class MorePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public events: Events, public alertCtrl: AlertController,
-              public appConfig: AppConfig) {
+              public appConfig: AppConfig, private toastCtrl: ToastController) {
     this.fontSize = appConfig.getFontSize();
   }
 
@@ -43,13 +44,14 @@ export class MorePage {
           text: 'Yes',
           handler: () => {
             this.appConfig.clearSongCache();
+            this.showToast('Cache Cleared');
           }
         }
       ]
     }).present();
   }
 
-  logout() {
+  logout(): void {
     this.alertCtrl.create({
       title: 'Logging out',
       message: 'Are you sure you want to log out of this account?',
@@ -65,6 +67,16 @@ export class MorePage {
           }
         }
       ]
+    }).present();
+  }
+
+  showToast(message: string): void {
+    this.toastCtrl.create({
+      message: message,
+      duration: 1500,
+      position: 'middle',
+      dismissOnPageChange: true,
+      cssClass: 'confirmToast'
     }).present();
   }
 
