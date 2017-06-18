@@ -44,7 +44,7 @@ export class SongDetailsPage implements AfterViewInit {
       this.song.currentKey = res.key;
       } else {
         this.backandService.getSongById(this.songId)
-        .subscribe( (response) => {
+        .then( (response) => {
           this.song = response;
           this.song.currentKey = response.key;
           this.storage.set('song:' + this.songId, response);

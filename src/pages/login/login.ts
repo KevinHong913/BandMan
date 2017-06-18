@@ -93,11 +93,11 @@ export class LoginPage {
   showError(text) {
     this.loading.dismiss();
 
-    let alert = this.alertCtrl.create({
+    this.alertCtrl.create({
       title: 'Fail',
       subTitle: text,
       buttons: ['OK']
-    });
+    }).present();
   }
 
   logout() {

@@ -49,7 +49,7 @@ export class SongsPage {
 
   getSongList(refresher?: any): void {
     this.backandService.getSongList()
-    .subscribe(response => {
+    .then(response => {
       this.songList = response;
       this.filteredList = response;
       this.storage.set('songList', this.songList);
