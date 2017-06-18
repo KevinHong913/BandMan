@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Http } from '@angular/http';
 import { BackandService } from '@backand/angular2-sdk';
-import 'rxjs/add/operator/map';
+// import { Observable } from 'rxjs/Rx';
+// import 'rxjs/add/operator/map';
 
 import { Song } from '../models/song';
 
