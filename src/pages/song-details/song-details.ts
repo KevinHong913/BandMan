@@ -1,5 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ViewController, Loading, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
@@ -12,9 +12,10 @@ import { AppConfig } from '../../providers/config';
   selector: 'page-song-details',
   templateUrl: 'song-details.html',
 })
-export class SongDetailsPage implements AfterViewInit {
+export class SongDetailsPage {
   private songId: number;
-  listType: string;
+  loading: Loading;
+  listType: string; // playlist & songlist
   song: Song;
   originalKey: string;
   currentKey: string;
@@ -24,7 +25,7 @@ export class SongDetailsPage implements AfterViewInit {
               public popoverCtrl: PopoverController, public events: Events,
               private backandService: Backand, private playlistService: PlaylistService,
               private viewCtrl: ViewController, public AppConfig: AppConfig,
-              private storage: Storage) {
+              private storage: Storage, private loadingCtrl: LoadingController ) {
     this.songId = navParams.get('songId');
     this.listType = navParams.get('listType');
   }
@@ -34,27 +35,6 @@ export class SongDetailsPage implements AfterViewInit {
     popover.present({
       ev: event
     });
-  }
-
-  ngOnInit() {
-
-    this.storage.get('song:' + this.songId).then(res => {
-      if(res) {
-        this.song = res;
-      this.song.currentKey = res.key;
-      } else {
-        this.backandService.getSongById(this.songId)
-        .then( (response) => {
-          this.song = response;
-          this.song.currentKey = response.key;
-          this.storage.set('song:' + this.songId, response);
-        });
-      }
-    })
-  }
-
-  ngAfterViewInit() {
-
   }
 
   changeSong(event): void {
@@ -73,6 +53,34 @@ export class SongDetailsPage implements AfterViewInit {
       viewIndex: this.viewCtrl.index
     };
     this.events.publish('song:change', eventData );
+  }
+
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      dismissOnPageChange: true
+    });
+    this.loading.present();
+  }
+
+  ngOnInit() {
+    this.showLoading();
+    // get song if song not cached
+    this.loading.present();
+    this.storage.get('song:' + this.songId).then(res => {
+      if(res) {
+        this.song = res;
+        this.song.currentKey = res.key;
+      } else {
+        this.backandService.getSongById(this.songId)
+        .then( (response) => {
+          this.song = response;
+          this.song.currentKey = response.key;
+          this.storage.set('song:' + this.songId, response);
+          this.loading.dismiss();
+        });
+      }
+    })
   }
 
   ionViewWillEnter() {

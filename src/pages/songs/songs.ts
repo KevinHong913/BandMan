@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController, Loading, LoadingController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { Song } from '../../models/song';
 import { PlaylistService } from '../../providers/playlist';
@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'songs.html',
 })
 export class SongsPage {
+  loading: Loading;
   songList: Song[];
   listType = 'songlist';
   currentSongIndex = -1; // start with -1
@@ -21,7 +22,7 @@ export class SongsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private backandService: Backand, public playlistService: PlaylistService,
               public events: Events, private storage: Storage,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
   }
 
   navToSongDetail(songId: number, listType: string, options: any = {}): void {
@@ -48,6 +49,7 @@ export class SongsPage {
   }
 
   getSongList(refresher?: any): void {
+    this.showLoading();
     this.backandService.getSongList()
     .then(response => {
       this.songList = response;
@@ -56,6 +58,7 @@ export class SongsPage {
       if(refresher) {
         refresher.complete();
       }
+      this.loading.dismiss();
     }, err => {
       this.alertCtrl.create({
         title: 'Warning',
@@ -72,6 +75,7 @@ export class SongsPage {
           }
         }]
       }).present();
+      this.loading.dismiss();
     })
   }
 
@@ -87,6 +91,14 @@ export class SongsPage {
     } else {
       this.filteredList = this.songList;
     }
+  }
+
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      dismissOnPageChange: true
+    });
+    this.loading.present();
   }
 
   songChangeEvent(): void {
