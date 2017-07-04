@@ -75,7 +75,6 @@ export class SongsPage {
           }
         }]
       }).present();
-      this.loading.dismiss();
     })
   }
 
@@ -96,7 +95,6 @@ export class SongsPage {
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...',
-      dismissOnPageChange: true
     });
     this.loading.present();
   }

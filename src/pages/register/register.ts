@@ -42,7 +42,7 @@ export class RegisterPage {
     },
       error => {
         console.log(error);
-        this.showPopup("Error", error);
+        this.showPopup(error.data.error, error.data.error_description);
     });
   }
 

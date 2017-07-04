@@ -21,6 +21,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 /* PIPE NOT WORKING... :( */
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { SongFilterPipe } from '../pipes/song-filter-pipe';
+import { StickyNoteComponent } from '../components/sticky-note/sticky-note';
+import { AbsoluteDragDirective } from '../directives/absolute-drag/absolute-drag';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -34,6 +36,8 @@ const cloudSettings: CloudSettings = {
     MyApp,
     TabsPage,
     SongFilterPipe,
+    StickyNoteComponent,
+    AbsoluteDragDirective,
   ],
   imports: [
     HttpModule,
