@@ -58,7 +58,7 @@ export class PlaylistPage {
       if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.playlist.length - 1) {
         this.currentSongIndex += data.direction;
         const directionStr = data.direction > 0 ? 'forward' : 'back';
-        this.navToSongDetail(this.playlist[this.currentSongIndex].id, this.listType, null, {direction: directionStr} );
+        this.navToSongDetail(this.playlist[this.currentSongIndex].id, this.listType, this.playlist[this.currentSongIndex], {direction: directionStr} );
         this.navCtrl.remove(data.viewIndex);
       }
     });

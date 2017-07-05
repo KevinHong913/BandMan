@@ -113,13 +113,17 @@ export class SongDetailsPage {
 
   ionViewWillEnter() {
 
+    // re-subscribe
+    this.events.unsubscribe('song:keyChanged');
+    this.events.unsubscribe('song:addToPlaylist');
+    this.events.unsubscribe('style:fontSizeChange');
+
     // set default font size
     this.fontSize = (this.listType === 'playlist' && this.song.fontSize) ? this.song.fontSize : this.AppConfig.getFontSize();
 
     // keychange in popover
     this.events.subscribe('song:keyChanged', (newKey) => {
       this.song.currentKey = newKey;
-      console.log("KEY EVENT", newKey);
     });
 
     // add to playlist in popover
@@ -141,12 +145,6 @@ export class SongDetailsPage {
         this.fontSize = tmpSize;
       }
     });
-  }
-
-  ionViewWillUnload() {
-    this.events.unsubscribe('song:keyChanged');
-    this.events.unsubscribe('song:addToPlaylist');
-    this.events.unsubscribe('style:fontSizeChange');
   }
 
 
