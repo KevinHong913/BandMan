@@ -22,4 +22,13 @@
   <div *ngIf="song" (swipe)="changeSong($event)">
     <ng2-chord-transpose [style.font-size.px]="fontSize" [style.line-height.px]="fontSize" [chordSections]='song?.sections' [key]='song?.currentKey' showUpDown="false"></ng2-chord-transpose>
   </div>
+  <ion-fab right bottom>
+    <button ion-fab color="light"><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab><span>Note</span></button>
+      <button ion-fab><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
+      <button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

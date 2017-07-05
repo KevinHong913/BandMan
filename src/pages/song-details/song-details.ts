@@ -1,5 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ViewController, Loading, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ViewController, Loading, LoadingController, AlertController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
@@ -17,21 +17,21 @@ export class SongDetailsPage {
   loading: Loading;
   listType: string; // playlist & songlist
   song: Song;
-  originalKey: string;
-  currentKey: string;
+  savedKey: string;
   fontSize: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
               private backandService: Backand, private playlistService: PlaylistService,
               private viewCtrl: ViewController, public AppConfig: AppConfig,
-              private storage: Storage, private loadingCtrl: LoadingController ) {
+              private storage: Storage, private loadingCtrl: LoadingController,
+              private alertCtrl: AlertController ) {
     this.songId = navParams.get('songId');
     this.listType = navParams.get('listType');
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.currentKey} );
+    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.currentKey, isPlaylist: (this.listType === 'playlist') } );
     popover.present({
       ev: event
     });
@@ -58,19 +58,16 @@ export class SongDetailsPage {
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...',
-      dismissOnPageChange: true
     });
     this.loading.present();
   }
 
-  ngOnInit() {
-    this.showLoading();
-    // get song if song not cached
-    this.loading.present();
+  loadSong() {
     this.storage.get('song:' + this.songId).then(res => {
       if(res) {
         this.song = res;
         this.song.currentKey = res.key;
+        this.loading.dismiss();
       } else {
         this.backandService.getSongById(this.songId)
         .then( (response) => {
@@ -80,12 +77,44 @@ export class SongDetailsPage {
           this.loading.dismiss();
         });
       }
-    })
+    });
+  }
+
+  showAlert(message: string) {
+    this.alertCtrl.create({
+      title: 'Success',
+      subTitle: message,
+      buttons: ['OK']
+    }).present();
+  }
+
+  ngOnInit() {
+    this.showLoading();
+    if(this.listType === 'playlist') {
+      let songBuffer = this.navParams.get('data');
+      if(songBuffer.currentKey) {
+        this.song = songBuffer;
+        this.savedKey = songBuffer.currentKey;
+        this.song.currentKey = songBuffer.key;
+        this.loading.dismiss();
+      } else {
+        this.loadSong();
+      }
+    } else {
+      this.loadSong();
+    }
+  }
+
+  ngAfterViewInit() {
+    if(this.listType === 'playlist' && this.song) {
+      this.song.currentKey = this.savedKey;
+    }
   }
 
   ionViewWillEnter() {
+
     // set default font size
-    this.fontSize = this.AppConfig.getFontSize();
+    this.fontSize = (this.listType === 'playlist' && this.song.fontSize) ? this.song.fontSize : this.AppConfig.getFontSize();
 
     // keychange in popover
     this.events.subscribe('song:keyChanged', (newKey) => {
@@ -95,7 +124,14 @@ export class SongDetailsPage {
 
     // add to playlist in popover
     this.events.subscribe('song:addToPlaylist', () => {
-      this.playlistService.addSong(this.song);
+      this.song.fontSize = this.fontSize;
+      if(this.listType === 'playlist') {
+        this.playlistService.editSong(this.song);
+        this.showAlert('Successfully update your playlist');
+      } else {
+        this.playlistService.addSong(this.song);
+        this.showAlert('Successfully add to your playlist');
+      }
     });
 
     // font size change

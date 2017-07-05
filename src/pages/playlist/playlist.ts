@@ -20,18 +20,18 @@ export class PlaylistPage {
               private playlistService: PlaylistService, public events: Events) {
   }
 
-  navToSongDetail(songId: number, listType: string, currentKey?: string, options: any = {}): void {
+  navToSongDetail(songId: number, listType: string, song: Song, options: any = {}): void {
     let params = {
       songId: songId,
       listType: listType,
-      currentKey: currentKey
+      data: song
     };
     this.navCtrl.push('SongDetailsPage', params, options );
   }
 
   goToSong(song: Song, index: number): void {
     this.currentSongIndex = index;
-    this.navToSongDetail(song.id, this.listType, song.currentKey);
+    this.navToSongDetail(song.id, this.listType, song);
   }
 
   removeFromPlaylist(index: number, slidingItem: ItemSliding): void {

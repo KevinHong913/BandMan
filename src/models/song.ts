@@ -11,4 +11,5 @@ export interface Song {
   youtube: string;
   createdAt: string;
   updatedAt: string;
+  fontSize: number;
 }

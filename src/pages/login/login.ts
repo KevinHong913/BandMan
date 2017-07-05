@@ -63,7 +63,7 @@ export class LoginPage {
 
     this.backand.signin(this.username, this.password)
     .then((data: any) => {
-      console.log(data);
+      console.log('signin', data);
       this.auth_status = 'OK';
       this.is_auth_error = false;
       this.loggedInUser = data.data.username;
@@ -78,6 +78,7 @@ export class LoginPage {
       this.is_auth_error = true;
       console.log(errorMessage)
       this.auth_status = 'ERROR';
+      this.showError(errorMessage);
     }
     );
   }
@@ -85,7 +86,6 @@ export class LoginPage {
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...',
-      dismissOnPageChange: true
     });
     this.loading.present();
   }

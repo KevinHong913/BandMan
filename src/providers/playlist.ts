@@ -39,6 +39,20 @@ export class PlaylistService {
     return this.playlist;
   }
 
+  public editSong(song: Song): Song[] {
+    if(song.id) {
+      this.playlist.forEach( (obj, index) => {
+        if(obj.id === song.id) {
+          this.playlist.splice(index, 1, song);
+          this.storage.set('playlist', this.playlist);
+          console.log('[Playlist]: '+ song.title + ' updated', this.playlist);
+        }
+
+      })
+    }
+    return this.playlist;
+  }
+
   public removeSong(index: number) {
     this.playlist.splice(index, 1);
     this.storage.set('playlist', this.playlist);

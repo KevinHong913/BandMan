@@ -18,9 +18,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-/* PIPE NOT WORKING... :( */
-import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
-import { SongFilterPipe } from '../pipes/song-filter-pipe';
 import { StickyNoteComponent } from '../components/sticky-note/sticky-note';
 import { AbsoluteDragDirective } from '../directives/absolute-drag/absolute-drag';
 
@@ -35,7 +32,6 @@ const cloudSettings: CloudSettings = {
   declarations: [
     MyApp,
     TabsPage,
-    SongFilterPipe,
     StickyNoteComponent,
     AbsoluteDragDirective,
   ],
@@ -43,7 +39,6 @@ const cloudSettings: CloudSettings = {
     HttpModule,
     BrowserModule,
     Ng2ChordTransposeModule,
-    Ng2FilterPipeModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: true,
     }),
@@ -61,7 +56,6 @@ const cloudSettings: CloudSettings = {
     Backand,
     BackandService,
     PlaylistService,
-    SongFilterPipe,
     AppConfig,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

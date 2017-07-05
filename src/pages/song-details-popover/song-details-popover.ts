@@ -12,10 +12,12 @@ export class SongDetailsPopover {
   key: string;
   fontSizeChangeUnit = 2;
 
+  addButtonText: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private ng2ChordTransposeService: Ng2ChordTransposeService, public events: Events,
               public viewCtrl: ViewController) {
-    this.keysList = ng2ChordTransposeService.getKeysList()
+    this.keysList = ng2ChordTransposeService.getKeysList();
   }
 
   keyValueChange(key) {
@@ -35,6 +37,7 @@ export class SongDetailsPopover {
   ngOnInit() {
     if (this.navParams.data) {
       this.key = this.navParams.data.key;
+      this.addButtonText = this.navParams.data.isPlaylist ? 'Save' : 'Add to playlist';
     }
   }
 

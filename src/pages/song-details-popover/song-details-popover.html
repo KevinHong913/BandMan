@@ -9,9 +9,7 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <button ion-button full (click)="addToPlaylist()">
-       Add to playlist
-    </button>
+    <button ion-button full (click)="addToPlaylist()">{{ addButtonText }}</button>
   </ion-row>
 
   <ion-item *ngFor="let key of keysList">
