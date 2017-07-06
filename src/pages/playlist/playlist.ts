@@ -53,6 +53,10 @@ export class PlaylistPage {
     }
   }
 
+  reorderSongs(indexes) {
+    this.playlistService.reorderSongs(indexes);
+  }
+
   songChangeEvent(): void {
     this.events.subscribe('song:change', (data) => {
       if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.playlist.length - 1) {

@@ -69,6 +69,7 @@ export class LoginPage {
       this.loggedInUser = data.data.username;
       this.username = '';
       this.password = '';
+      this.loading.dismiss();
       this.navCtrl.setRoot(TabsPage);
     },
     (error: any) => {
@@ -85,7 +86,8 @@ export class LoginPage {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
+      content: 'Logging in...',
+      // dismissOnPageChange: true
     });
     this.loading.present();
   }

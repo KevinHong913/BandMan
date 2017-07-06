@@ -57,7 +57,7 @@ export class SongDetailsPage {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
+      content: 'Loading song...',
     });
     this.loading.present();
   }
@@ -119,7 +119,8 @@ export class SongDetailsPage {
     this.events.unsubscribe('style:fontSizeChange');
 
     // set default font size
-    this.fontSize = (this.listType === 'playlist' && this.song.fontSize) ? this.song.fontSize : this.AppConfig.getFontSize();
+    let font = (this.listType === 'playlist' && this.song && this.song.fontSize) ? this.song.fontSize : this.AppConfig.getFontSize();
+    this.fontSize = font;
 
     // keychange in popover
     this.events.subscribe('song:keyChanged', (newKey) => {

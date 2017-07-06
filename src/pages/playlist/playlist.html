@@ -2,6 +2,11 @@
 
   <ion-navbar>
     <ion-title>Playlist</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only >
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -9,7 +14,7 @@
 
 <ion-content>
   <ion-searchbar (ionInput)="searchSongs($event)"></ion-searchbar>
-  <ion-list>
+  <ion-list reorder="true" (ionItemReorder)="reorderSongs($event)">
     <ion-item-sliding #slidingItem *ngFor="let song of filteredList; let i = index">
       <button class="song-item" ion-item (click)="goToSong(song, i)">
         <h2>{{ song.title }}</h2>

@@ -60,4 +60,10 @@ export class PlaylistService {
     return this.playlist;
   }
 
+  public reorderSongs(indexes: any) {
+    let element = this.playlist[indexes.from];
+    this.playlist.splice(indexes.from, 1);
+    this.playlist.splice(indexes.to, 0, element);
+  }
+
 }

@@ -34,7 +34,6 @@ export class SongsPage {
   }
 
   listRefresh(refresher): void {
-    console.log('LIST REFRESH');
     this.getSongList(refresher);
   }
 
@@ -60,6 +59,7 @@ export class SongsPage {
       }
       this.loading.dismiss();
     }, err => {
+      this.loading.dismiss();
       this.alertCtrl.create({
         title: 'Warning',
         subTitle: 'Cannot get song list',
@@ -94,7 +94,7 @@ export class SongsPage {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
+      content: 'Refreshing list...',
     });
     this.loading.present();
   }
