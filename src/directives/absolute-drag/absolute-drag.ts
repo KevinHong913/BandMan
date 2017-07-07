@@ -1,16 +1,25 @@
 import { Directive, Input, ElementRef, Renderer } from '@angular/core';
 import { DomController } from 'ionic-angular';
+import { Position } from '../../models/position';
 
 @Directive({
   selector: '[absolute-drag]'
 })
 export class AbsoluteDragDirective {
 
-  @Input('startLeft') startLeft: any;
-  @Input('startTop') startTop: any;
+  // @Input('startLeft') startLeft: any;
+  // @Input('startTop') startTop: any;
+  @Input() position: any;
+  startLeft: any;
+  startTop: any;
 
   constructor(public element: ElementRef, public renderer: Renderer, public domCtrl: DomController) {
 
+  }
+
+  ngOnInit() {
+    this.startTop = this.position.top;
+    this.startLeft = this.position.left;
   }
 
   ngAfterViewInit() {
@@ -25,6 +34,8 @@ export class AbsoluteDragDirective {
       this.handlePan(ev);
     });
   }
+
+
 
   handlePan(ev){
     let newLeft = ev.center.x;

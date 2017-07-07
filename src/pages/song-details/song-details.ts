@@ -5,7 +5,11 @@ import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { PlaylistService } from '../../providers/playlist';
 import { Song } from '../../models/song';
+import { Note } from '../../models/note';
+import { Position } from '../models/position';
 import { AppConfig } from '../../providers/config';
+
+import { StickyNoteComponent } from '../../components/sticky-note/sticky-note';
 
 @IonicPage()
 @Component({
@@ -19,6 +23,7 @@ export class SongDetailsPage {
   song: Song;
   savedKey: string;
   fontSize: number;
+  notes: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
@@ -53,6 +58,19 @@ export class SongDetailsPage {
       viewIndex: this.viewCtrl.index
     };
     this.events.publish('song:change', eventData );
+  }
+
+
+  addNewNote(color: number) {
+    let newNote: Note = {
+      data: 'Note #' + this.notes.length,
+      color: 'yellow',
+      position: {
+        top: 50 * this.notes.length,
+        left: 100 * this.notes.length
+      }
+    }
+    this.notes.push(newNote);
   }
 
   showLoading() {

@@ -1,4 +1,5 @@
 <!-- Generated template for the StickyNoteComponent component -->
-<div absolute-drag>
-  {{text}}
+<div class="note" (pan)="panEvent($event)"
+     [style.top.px]="noteTop" [style.left.px]="noteLeft">
+  {{ note.data }}
 </div>
