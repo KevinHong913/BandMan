@@ -20,9 +20,10 @@
     <ion-fab right bottom>
       <button ion-fab color="light"><ion-icon name="add"></ion-icon></button>
       <ion-fab-list side="top">
-        <button ion-fab (click)="addNewNote(0)"><span>Yellow</span></button>
-        <button ion-fab (click)="addNewNote(1)"><span>Blue</span></button>
-        <button ion-fab (click)="addNewNote(2)"><span>Purple</span></button>
+        <button ion-fab *ngFor="let fab of fabsMetaData; let i = index" (click)="addNewNote(fab)">
+          <ion-icon name="document"></ion-icon>
+          <ion-label>{{fab}}</ion-label>
+        </button>
       </ion-fab-list>
     </ion-fab>
 </ion-content>

@@ -41,6 +41,7 @@ const cloudSettings: CloudSettings = {
     Ng2ChordTransposeModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: true,
+      swipeBackEnabled:false
     }),
     CloudModule.forRoot(cloudSettings),
     IonicStorageModule.forRoot()

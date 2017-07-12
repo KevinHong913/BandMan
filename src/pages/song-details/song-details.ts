@@ -25,7 +25,15 @@ export class SongDetailsPage {
   fontSize: number;
   offsetTop: number;
   // notes: any = [];
-
+  fabsMetaData: String[] = [
+    'Fade In',
+    'Fade Out',
+    'Repeat',
+    'Build',
+    'Mute',
+    'Extra Messure',
+    'Solo'
+  ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
@@ -62,9 +70,9 @@ export class SongDetailsPage {
     this.events.publish('song:change', eventData );
   }
 
-  addNewNote(color: number) {
+  addNewNote(message: string) {
     let newNote: Note = {
-      data: 'Note #' + this.song.notes.length,
+      data: message,
       color: 'yellow',
       position: {
         top: 50 * this.song.notes.length,
