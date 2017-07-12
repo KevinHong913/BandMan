@@ -23,7 +23,9 @@ export class SongDetailsPage {
   song: Song;
   savedKey: string;
   fontSize: number;
-  notes: any = [];
+  offsetTop: number;
+  // notes: any = [];
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
@@ -60,17 +62,18 @@ export class SongDetailsPage {
     this.events.publish('song:change', eventData );
   }
 
-
   addNewNote(color: number) {
     let newNote: Note = {
-      data: 'Note #' + this.notes.length,
+      data: 'Note #' + this.song.notes.length,
       color: 'yellow',
       position: {
-        top: 50 * this.notes.length,
-        left: 100 * this.notes.length
-      }
+        top: 50 * this.song.notes.length,
+        left: 100 * this.song.notes.length
+      },
+      height: 100,
+      width: 100
     }
-    this.notes.push(newNote);
+    this.song.notes.push(newNote);
   }
 
   showLoading() {
@@ -86,16 +89,24 @@ export class SongDetailsPage {
         this.song = res;
         this.song.currentKey = res.key;
         this.loading.dismiss();
+        if(!this.song.notes) {
+          this.song.notes = [];
+        }
       } else {
         this.backandService.getSongById(this.songId)
         .then( (response) => {
           this.song = response;
           this.song.currentKey = response.key;
+          this.song.notes = [];
           this.storage.set('song:' + this.songId, response);
           this.loading.dismiss();
         });
       }
     });
+  }
+
+  onNoteChange(event: any, index: number) {
+    this.song.notes[index] = event;
   }
 
   showAlert(message: string) {
@@ -164,6 +175,11 @@ export class SongDetailsPage {
         this.fontSize = tmpSize;
       }
     });
+  }
+
+  ionViewDidEnter() {
+    let scrollContent = document.querySelector('#song-detail-ion-content .scroll-content');
+    this.offsetTop = scrollContent.getBoundingClientRect().top;
   }
 
 

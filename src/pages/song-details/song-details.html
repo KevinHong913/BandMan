@@ -2,18 +2,18 @@
 
   <ion-navbar>
     <ion-title>{{ song?.title }}</ion-title>
-<!--     <ion-buttons end>
+    <ion-buttons end>
       <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="more"></ion-icon>
       </button>
-    </ion-buttons> -->
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-    <sticky-note *ngFor="let note of notes" [note]="note"></sticky-note>
+<ion-content padding id="song-detail-ion-content">
+    <sticky-note *ngFor="let note of song?.notes; let i = index" [note]="note" (noteChange)="onNoteChange($event, i)" [offsetTop]="offsetTop"></sticky-note>
     <div *ngIf="song" (swipe)="changeSong($event)">
       <ng2-chord-transpose [style.font-size.px]="fontSize" [style.line-height.px]="fontSize" [chordSections]='song?.sections' [key]='song?.currentKey' showUpDown="false"></ng2-chord-transpose>
     </div>

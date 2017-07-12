@@ -24,3 +24,11 @@
     border-right: 1px solid #8e9093;
   }
 }
+
+#song-detail-ion-content .scroll-content {
+  overflow-y: scroll;
+}
+
+#song-detail-ion-content.pan .scroll-content {
+  overflow-y: hidden;
+}

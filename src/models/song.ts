@@ -1,4 +1,5 @@
 import { SongSection } from './song-section';
+import { Note } from './note';
 
 export interface Song {
   id: number;
@@ -12,4 +13,5 @@ export interface Song {
   createdAt: string;
   updatedAt: string;
   fontSize: number;
+  notes: Note[];
 }
