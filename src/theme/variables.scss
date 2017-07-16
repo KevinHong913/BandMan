@@ -11,7 +11,18 @@ $font-path: "../assets/fonts";
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+$color-white: #fff;
 
+$theme-blue: #1DBCD2;
+$theme-green: #30D9D0;
+$theme-dark-green: #1BACAA;
+$theme-gray: #F7F8F9;
+$theme-dark-gray: #DBDADA;
+$theme-dark-dark-green: #0F91A2;
+
+$font-black: #4F4F4F;
+$font-dark-gray: #8E8E8E;
+$font-gray: #868686;
 
 
 
@@ -24,8 +35,8 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
+  primary:    #30D9D0,
+  secondary:  #0F91A2,
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222
@@ -49,7 +60,9 @@ $colors: (
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
+:host-context /deep/ .header {
+  background-color: $theme-dark-dark-green;
+}
 
 
 
