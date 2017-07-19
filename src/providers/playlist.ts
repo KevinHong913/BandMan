@@ -66,4 +66,9 @@ export class PlaylistService {
     this.playlist.splice(indexes.to, 0, element);
   }
 
+  public clearAll(): Promise<any> {
+    this.playlist = [];
+    return Promise.resolve(true);
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, PopoverController, AlertController } from 'ionic-angular';
 import { Song } from '../../models/song';
 import { PlaylistService } from '../../providers/playlist';
 import { ItemSliding } from 'ionic-angular';
@@ -17,7 +17,15 @@ export class PlaylistPage {
   filter: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private playlistService: PlaylistService, public events: Events) {
+              private playlistService: PlaylistService, public events: Events,
+              public popoverCtrl: PopoverController, public alertCtrl: AlertController) {
+  }
+
+  presentPopover(event) {
+    let popover = this.popoverCtrl.create('PlaylistPopover');
+    popover.present({
+      ev: event
+    });
   }
 
   navToSongDetail(songId: number, listType: string, song: Song, options: any = {}): void {
@@ -57,7 +65,7 @@ export class PlaylistPage {
     this.playlistService.reorderSongs(indexes);
   }
 
-  songChangeEvent(): void {
+  subSongChangeEvent(): void {
     this.events.subscribe('song:change', (data) => {
       if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.playlist.length - 1) {
         this.currentSongIndex += data.direction;
@@ -68,6 +76,15 @@ export class PlaylistPage {
     });
   }
 
+  subClearAllEvent(): void {
+    this.events.subscribe('playlist:clearall', (data) => {
+      this.playlistService.clearAll()
+      .then( res => {
+        this.alertCtrl
+      });
+    });
+  }
+
   ionViewWillEnter() {
     this.playlist = this.playlistService.getPlaylist();
     this.filteredList = this.playlist;
@@ -75,7 +92,8 @@ export class PlaylistPage {
   }
 
   ngOnInit() {
-    this.songChangeEvent();
+    this.subSongChangeEvent();
+    this.subClearAllEvent();
   }
 
 }
