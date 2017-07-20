@@ -1,7 +1,8 @@
 page-login {
 
   .login-content {
-    // background: #56CA96;
+    background: url('../assets/img/bg.png');
+    background-repeat: repeat-x;
 
     .logo-row {
       padding-top: 50px;
@@ -14,50 +15,87 @@ page-login {
 
     .app-decription {
       font-size: 1em;
-      color: $theme-green;
+      color: $color-white;
     }
 
     .login-box {
-      // background: gray;
       width: 90%;
       max-width: 400px;
       margin: 30px auto 0;
+
+      .login-input-label {
+        text-align: left;
+        color: $color-white;
+        margin-bottom: 0;
+      }
+
+      .login-input {
+        color: $font-black;
+        background: transparent;
+
+        input {
+          margin-top: 0;
+        }
+      }
+    }
+
+    ion-item, .item-inner, .input-wrapper {
+      background: transparent;
+      background-color: transparent;
+    }
+
+    ion-item {
+      padding-left: 0;
+        border-bottom: 1px solid $color-white;
     }
 
     ion-row {
-       align-items: center;
-       text-align: center;
-     }
+      align-items: center;
+      text-align: center;
+    }
 
-     // ion-item {
-     //     border-radius: 30px !important;
-     //     padding-left: 30px !important;
-     //     font-size: 0.9em;
-     //     margin-bottom: 10px;
-     //     // border: 1px solid #ffffff;
-     //     border-bottom: 0px !important;
-     //     box-shadow: none !important;
-     // }
+    .signup-col {
+      margin: 0px 16px 0px 16px;
+      padding-bottom: 20px;
+    }
 
-     .signup-col {
-       margin: 0px 16px 0px 16px;
-       padding-bottom: 20px;
-     }
+    .submit-btn {
+      background: $color-white;
+      color: $font-black;
+    }
 
-     // .item-inner {
-     //   // border-bottom-color: #ffffff !important;
-     //   box-shadow: none !important;
-     // }
+    .forgot-btn {
+      color: $color-white;
+    }
+  }
 
-     .submit-btn {
-       // background: #51CFB1;
-       // border-radius: 30px !important;
-       // border: 1px solid #ffffff;
-     }
+  .register-btn {
+    color: #ffffff;
+    font-size: 1.3em;
 
-     .register-btn {
-       // color: #ffffff;
-       font-size: 1em;
-     }
+    .register-btn-inner-description {
+      margin-right: 10px;
+    }
+
+    .register-btn-inner-content {
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    .button-inner {
+      color: $color-white;
+    }
+  }
+
+  ion-footer {
+    height: 10%;
+  }
+
+  ion-footer ion-toolbar {
+    height: 100%;
+
+    & > .toolbar-background {
+      background: $theme-blue;
+    }
   }
 }

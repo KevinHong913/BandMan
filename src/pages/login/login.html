@@ -4,35 +4,43 @@
     <ion-col width-67 style="margin-top: 30%;"  text-center>
       <!-- <img src="http://placehold.it/300x200"/> -->
       <!-- <h1 class="app-title">BandMan</h1> -->
-      <img src="assets/img/logo_blue_90.png"/>
+      <img src="assets/img/logo_white_90.png"/>
       <span class="app-decription">Build by musician. Build for musician.</span>
     </ion-col>
     <ion-col></ion-col>
   </ion-row>
   <div class="login-box">
-  <form (ngSubmit)="login()" #registerForm="ngForm">
-    <ion-row>
-      <ion-col>
-        <ion-list inset>
+    <form (ngSubmit)="login()" #registerForm="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
+            <ion-label class="login-input-label" color="bright">Username</ion-label>
+            <ion-item>
+              <ion-input type="text" class="login-input" placeholder="Email" name="email" [(ngModel)]="username" required></ion-input>
+            </ion-item>
+            <ion-label class="login-input-label" color="bright">Password</ion-label>
+            <ion-item>
+              <ion-input type="password" class="login-input" placeholder="Password" name="password" [(ngModel)]="password" required></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
 
-          <ion-item>
-            <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="username" required></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="password" required></ion-input>
-          </ion-item>
-
-        </ion-list>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col class="signup-col">
-        <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
-        <button ion-button class="register-btn" type="button" block clear (click)="createAccount()">Create New Account</button>
-      </ion-col>
-    </ion-row>
-  </form>
+      <ion-row>
+        <ion-col class="signup-col">
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
+          <button ion-button class="forgot-btn" type="button" block clear (click)="createAccount()">Forgot Password?</button>
+        </ion-col>
+      </ion-row>
+    </form>
   </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button class="register-btn" type="button" block clear (click)="createAccount()">
+      <span class="register-btn-inner-description">Don't have an account?</span>
+      <span class="register-btn-inner-content">Create New Account</span>
+    </button>
+  </ion-toolbar>
+</ion-footer>
