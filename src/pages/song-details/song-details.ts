@@ -78,7 +78,7 @@ export class SongDetailsPage {
         top: 50 * this.song.notes.length,
         left: 100 * this.song.notes.length
       },
-      height: 100,
+      height: 40,
       width: 100
     }
     this.song.notes.push(newNote);
