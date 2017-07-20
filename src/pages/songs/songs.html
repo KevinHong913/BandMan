@@ -6,10 +6,12 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
+  <ion-navbar class="bm-navbar">
     <ion-title>BandMan</ion-title>
   </ion-navbar>
-
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="searchSongs($event)"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 
@@ -18,9 +20,9 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-searchbar (ionInput)="searchSongs($event)"></ion-searchbar>
+  
   <ion-list>
-    <ion-item-sliding #slidingItem *ngFor="let song of filteredList; let i = index">
+    <ion-item-sliding #slidingItem class="song-list-item" *ngFor="let song of filteredList; let i = index">
       <button class="song-item" ion-item (click)="goToSong(song.id, i)">
         <h2>{{ song.title }}</h2>
         <p>{{ song.artist || 'N/A'}} </p><p>|</p> <p> {{ song.tempo || 'N/A' }} BPM</p>

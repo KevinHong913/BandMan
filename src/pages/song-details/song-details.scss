@@ -1,16 +1,22 @@
 page-song-details {
   .chord-area {
     overflow: visible;
+    padding-top: 10px;
     // font-size: 18px !important;
     // line-height: 18px !important;
   }
 
   chord-area > span {
     font-size: 18px;
+    font-weight: 500;
   }
 
   .chord {
     color: $theme-dark-dark-green;
+  }
+
+  .non-chord {
+    margin-bottom: 10px
   }
 
   .fab {

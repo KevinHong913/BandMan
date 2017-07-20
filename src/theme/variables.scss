@@ -24,8 +24,6 @@ $font-black: #4F4F4F;
 $font-dark-gray: #8E8E8E;
 $font-gray: #868686;
 
-
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -35,7 +33,7 @@ $font-gray: #868686;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #30D9D0,
+  primary:    #1DBCD2,
   secondary:  #0F91A2,
   danger:     #f53d3d,
   light:      #f4f4f4,
@@ -60,10 +58,6 @@ $colors: (
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-:host-context /deep/ .header {
-  background-color: $theme-dark-dark-green;
-}
-
 
 
 // App Theme

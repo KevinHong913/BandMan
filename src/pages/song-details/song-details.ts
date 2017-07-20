@@ -142,6 +142,15 @@ export class SongDetailsPage {
     }
   }
 
+  changeUpDownBtnStyle() {
+    let btnElements = document.querySelectorAll('.up-down-container button');
+    for(let i = 0 ; i < btnElements.length; ++i) {
+      btnElements[i].setAttribute('ion-button', '');
+      btnElements[i].classList.add('bm-btn');
+      btnElements[i].classList.add('up-down-btn');
+    }
+  }
+
   ngAfterViewInit() {
     if(this.listType === 'playlist' && this.song) {
       this.song.currentKey = this.savedKey;
@@ -188,6 +197,8 @@ export class SongDetailsPage {
   ionViewDidEnter() {
     let scrollContent = document.querySelector('#song-detail-ion-content .scroll-content');
     this.offsetTop = scrollContent.getBoundingClientRect().top;
+
+    this.changeUpDownBtnStyle();
   }
 
 
