@@ -1,4 +1,15 @@
 page-song-details {
+
+  .up-down-container {
+    margin-bottom: 20px;
+    .up-down-btn {
+      width: 70px;
+      height: 30px;
+      font-size: 16px;
+      color: $font-black;
+    }  
+  }
+  
   .chord-area {
     overflow: visible;
     padding-top: 10px;
