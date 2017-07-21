@@ -3,13 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { BackandService } from '@backand/angular2-sdk';
 import { TabsPage } from '../tabs/tabs';
 
-
-/**
- * Generated class for the Login page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -54,11 +47,15 @@ export class LoginPage {
     });
   }
 
-  public createAccount() {
+  forgotPassword(event) {
+    this.navCtrl.push('ForgotPasswordPage');
+  }
+
+  createAccount() {
     this.navCtrl.push('RegisterPage');
   }
 
-  public login() {
+  login() {
     this.showLoading();
 
     this.backand.signin(this.username, this.password)

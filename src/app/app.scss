@@ -15,6 +15,10 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+body {
+  color: $font-black;
+}
+
 .song-item p {
   display: inline-block;
   margin-right: 10px;
@@ -40,7 +44,7 @@
 
   .tab-button .tab-button-text {
     color: #f4f4f4;
-    font-weight: 900;
+    font-weight: 700;
     font-size: 14px;
   }
 

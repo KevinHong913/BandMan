@@ -1,3 +1,11 @@
 page-songs {
 
+  .song-list-item button .item-inner {
+    border-bottom: none !important;
+
+    .label h2 {
+      color: $font-black !important;
+    }
+  }
+
 }

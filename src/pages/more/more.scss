@@ -1,5 +1,11 @@
 page-more {
+  * {
+    color: $font-black;
+  }
 
+  ion-list-header .label {
+    color: $theme-blue
+  }
 }
 
 .confirmToast .toast-wrapper {

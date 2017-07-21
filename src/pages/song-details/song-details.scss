@@ -1,25 +1,33 @@
 page-song-details {
 
+
+  .chord-area-wrapper {
+    margin-left: 4%;
+  }
+
   .up-down-container {
-    margin-bottom: 20px;
+    margin-top: 25px;
+    margin-bottom: 45px;
+
     .up-down-btn {
       width: 80px;
       height: 30px;
       font-size: 16px;
       color: $font-black;
+      background-color: #ddd;
+      margin-right: 10px;
     }
   }
 
   .chord-area {
     overflow: visible;
     padding-top: 10px;
-    // font-size: 18px !important;
-    // line-height: 18px !important;
   }
 
   chord-area > span {
     font-size: 18px;
     font-weight: 500;
+    color: $theme-blue;
   }
 
   .chord {
@@ -27,7 +35,8 @@ page-song-details {
   }
 
   .non-chord {
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    color: $font-black;
   }
 
   .fab {

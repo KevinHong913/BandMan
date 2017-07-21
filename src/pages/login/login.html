@@ -1,13 +1,13 @@
 <ion-content class="login-content" padding>
   <ion-row class="logo-row">
-    <ion-col></ion-col>
-    <ion-col width-67 style="margin-top: 30%;"  text-center>
+    <ion-col col-3></ion-col>
+    <ion-col col-6 style="margin-top: 30%;"  text-center>
       <!-- <img src="http://placehold.it/300x200"/> -->
       <!-- <h1 class="app-title">BandMan</h1> -->
-      <img src="assets/img/logo_white_90.png"/>
-      <span class="app-decription">Build by musician. Build for musician.</span>
+      <img class="logo-img" src="assets/img/logo_white_90.png"/>
+      <span class="app-description">Build by musician. Build for musician.</span>
     </ion-col>
-    <ion-col></ion-col>
+    <ion-col  col-3></ion-col>
   </ion-row>
   <div class="login-box">
     <form (ngSubmit)="login()" #registerForm="ngForm">
@@ -29,7 +29,7 @@
       <ion-row>
         <ion-col class="signup-col">
           <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Login</button>
-          <button ion-button class="forgot-btn" type="button" block clear (click)="createAccount()">Forgot Password?</button>
+          <button ion-button class="forgot-btn" type="button" block clear (click)="forgotPassword($event)">Forgot Password?</button>
         </ion-col>
       </ion-row>
     </form>

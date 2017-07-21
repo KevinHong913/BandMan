@@ -4,6 +4,11 @@ page-login {
     background: url('../assets/img/bg.png');
     background-repeat: repeat-x;
 
+    .logo-img {
+      width: 75%;
+      margin-bottom: 1px;
+    }
+
     .logo-row {
       padding-top: 50px;
       padding-bottom: 20px;
@@ -13,10 +18,12 @@ page-login {
       font-size: 3em;
     }
 
-    .app-decription {
-      font-size: 1em;
+    .app-description {
+      display: block;
+      font-size: 1.2em;
       color: $color-white;
     }
+
 
     .login-box {
       width: 90%;
@@ -46,11 +53,10 @@ page-login {
 
     ion-item {
       padding-left: 0;
-        border-bottom: 1px solid $color-white;
+      border-bottom: 1px solid $color-white !important;
     }
 
     ion-row {
-      align-items: center;
       text-align: center;
     }
 
@@ -71,10 +77,10 @@ page-login {
 
   .register-btn {
     color: #ffffff;
-    font-size: 1.3em;
+    font-size: 1.1em;
 
     .register-btn-inner-description {
-      margin-right: 10px;
+      margin-right: 5px;
     }
 
     .register-btn-inner-content {
