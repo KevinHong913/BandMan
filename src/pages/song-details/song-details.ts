@@ -117,6 +117,10 @@ export class SongDetailsPage {
     this.song.notes[index] = event;
   }
 
+  onNoteRemove(index: number) {
+    this.song.notes.splice(index, 1);
+  }
+
   showAlert(message: string) {
     this.alertCtrl.create({
       title: 'Success',

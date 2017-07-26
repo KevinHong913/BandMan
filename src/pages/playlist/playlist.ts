@@ -80,7 +80,8 @@ export class PlaylistPage {
     this.events.subscribe('playlist:clearall', (data) => {
       this.playlistService.clearAll()
       .then( res => {
-        this.alertCtrl
+        this.playlist = res;
+        this.filteredList = [];
       });
     });
   }

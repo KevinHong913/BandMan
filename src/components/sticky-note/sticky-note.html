@@ -5,13 +5,26 @@
     [style.left.px]="note.position.left"
     [style.width.px]="note.width"
     [style.height.px]="note.height"
-    [attr.contenteditable]="editable"
     (click)="onClickEvent($event)"
     [enableGhostResize]="true"
     (resizeStart)="onResizeStart($event)"
     (resizeEnd)="onResizeEnd($event)"
-    (keyup)="onDataChange($event)">
-    <ion-textarea class="note-textarea" autosize [(ngModel)]="note.data"></ion-textarea>
-
+    (keyup)="onDataChange($event)"
+    [ngClass]="{editMode: isEdit}">
+    <div class="note-content">
+      <ion-textarea #editTextarea class="note-textarea" autosize
+      [(ngModel)]="note.data"
+      [disabled]="isDisabled ? '' : null"></ion-textarea>
+    </div>
     <img src="http://i.imgur.com/eqzz2dl.gif" mwlResizeHandle class="resize-handle" [resizeEdges]="{bottom: true, right: true}">
+</div>
+
+<div class="edit-wrapper" *ngIf="isEdit">
+  <div class="edit-content"
+      [style.top.px]="note.position.top - 24"
+      [style.left.px]="note.position.left">
+    <button (click)="onEditNote($event);" class="note-edit-btn">Edit</button>
+    <button (click)="onRemoveNote($event)" class="note-remove-btn">Delete</button>
+    <button (click)="onEditDone($event)" class="note-done-btn">Done</button>
+  </div>
 </div>

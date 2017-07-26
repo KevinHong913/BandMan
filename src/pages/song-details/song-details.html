@@ -13,7 +13,7 @@
 
 
 <ion-content padding id="song-detail-ion-content">
-    <sticky-note *ngFor="let note of song?.notes; let i = index" [note]="note" (noteChange)="onNoteChange($event, i)" [offsetTop]="offsetTop"></sticky-note>
+    <sticky-note *ngFor="let note of song?.notes; let i = index" [note]="note" (noteRemove)="onNoteRemove(i)" (noteChange)="onNoteChange($event, i)" [offsetTop]="offsetTop"></sticky-note>
     <div class="chord-area-wrapper" *ngIf="song" (swipe)="changeSong($event)">
       <ng2-chord-transpose [style.font-size.px]="fontSize" [style.line-height.px]="fontSize" [chordSections]='song?.sections' [key]='song?.currentKey' showUpDown="false"></ng2-chord-transpose>
     </div>

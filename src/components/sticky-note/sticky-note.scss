@@ -3,13 +3,20 @@ sticky-note {
     position: absolute;
     width: 100px;
     height: 40px;
-    background-color: #1BACAA;
+    background-color: #FAED7E;
     border: 1px solid #333;
     padding: 5px;
     overflow: hidden;
     -webkit-user-select: text;
     user-select: text;
     opacity: 0.7;
+    border-radius: 5px;
+    z-index: 0;
+
+    &.editMode {
+      z-index: 300;
+    }
+
   }
 
   .resize-handle {
@@ -30,7 +37,12 @@ sticky-note {
       margin: 0;
       width: 100%;
       font-size: 1.3em;
-      color: $color-white;
+      color: #111;
+
+      &[disabled] {
+        color: $font-black;
+        opacity: 1;
+      }
     }
   }
 
@@ -39,4 +51,49 @@ sticky-note {
     outline: none;
     box-sizing: border-box;
   }
+
+  .note-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .edit-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(40, 40, 40, 0.3);
+
+  }
+
+  .edit-content {
+    position: absolute;
+    // position: relative;
+    top: 0;
+    right: -200px;
+    display: inline-block;
+    position: relative;
+
+    button {
+      display: inline-block;
+      background: transparent;
+      font-size: 16px;
+      font-weight: 500;
+
+      &.note-edit-btn {
+        color: $theme-dark-dark-green;
+      }
+
+      &.note-remove-btn {
+        color: map-get($colors, danger);
+      }
+
+      &.note-done-btn {
+        color: $theme-dark-dark-green;
+      }
+    }
+  }
+
 }

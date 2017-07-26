@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Note } from '../../models/note';
 import { Position } from '../../models/position';
 import { AbsoluteDragDirective } from '../../directives/absolute-drag/absolute-drag';
@@ -14,10 +14,14 @@ export class StickyNoteComponent {
   @Input() note: Note;
   @Input() offsetTop: number;
   @Output() noteChange = new EventEmitter<Note>();
+  @Output() noteRemove = new EventEmitter<Note>();
+  @ViewChild('editTextarea') editTextarea;
 
   content: any;
-  editable = true;
+  isEdit = false;
   isResize = false;
+  isDisabled = true;
+  editWrapperStyle: any = {};
 
   constructor() {
     this.content = document.getElementById('song-detail-ion-content');
@@ -27,17 +31,19 @@ export class StickyNoteComponent {
   }
 
   onPanEvent(event) {
-    this.content.classList.add('pan'); // the pan class will set content to overflow hidden
+    if(!this.isEdit) {
+      this.content.classList.add('pan'); // the pan class will set content to overflow hidden
 
-    if(!this.isResize) {
-      console.log('pan', event);
-      this.note.position.top = event.center.y - this.offsetTop;
-      this.note.position.left = event.center.x;
-    }
+      if(!this.isResize) {
+        console.log('pan', event);
+        this.note.position.top = event.center.y - this.offsetTop;
+        this.note.position.left = event.center.x;
+      }
 
-    if(event.isFinal) {
-      this.content.classList.remove('pan');
-      this.triggerNoteChange();
+      if(event.isFinal) {
+        this.content.classList.remove('pan');
+        this.triggerNoteChange();
+      }
     }
   }
 
@@ -64,19 +70,26 @@ export class StickyNoteComponent {
     this.triggerNoteChange();
   }
 
-  onInputKeyDown(event) {
-   //  if (event.which == 13) {
-   //    event.preventDefault();
-   //    var s = $(this).val();
-   //    $(this).val(s+"\n");
-   // }
-  }
-
   triggerNoteChange() {
     this.noteChange.emit(this.note);
   }
 
   onClickEvent(event) {
-    this.editable = true;
+    this.isEdit = true;
+  }
+
+  onEditNote(event) {
+    this.isDisabled = false;
+    // const element = this.renderer.selectRootElement(this.editTextarea);
+    setTimeout(() => {this.editTextarea.setFocus()}, 50);
+  }
+
+  onRemoveNote(event) {
+    this.noteRemove.emit();
+  }
+
+  onEditDone(event) {
+    this.isEdit = false;
+    this.isDisabled = true;
   }
 }

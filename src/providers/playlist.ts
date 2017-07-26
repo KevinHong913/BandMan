@@ -68,7 +68,8 @@ export class PlaylistService {
 
   public clearAll(): Promise<any> {
     this.playlist = [];
-    return Promise.resolve(true);
+    this.storage.set('playlist', this.playlist);
+    return Promise.resolve(this.playlist);
   }
 
 }
