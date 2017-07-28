@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar class="bm-navbar" color="primary">
-    <ion-title>Playlist</ion-title>
+    <ion-title>Setlist</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="more"></ion-icon>
@@ -24,12 +24,12 @@
       </button>
 
       <ion-item-options side="right">
-        <button ion-button color="danger" (click)="removeFromPlaylist(i, slidingItem)">Delete</button>
+        <button ion-button color="danger" (click)="removeFromSetlist(i, slidingItem)">Delete</button>
       </ion-item-options>
     </ion-item-sliding>
 
-    <ion-item *ngIf="playlist?.length === 0">
-      <h2 text-center>The playlist is empty. Go add some song to playlist!</h2>
+    <ion-item *ngIf="setlist?.length === 0">
+      <h2 text-center>The setlist is empty. Go add some song to setlist!</h2>
     </ion-item>
   </ion-list>
 </ion-content>

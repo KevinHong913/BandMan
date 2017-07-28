@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, Events, ViewController, Loading, L
 import { Storage } from '@ionic/storage';
 import { PopoverController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
-import { PlaylistService } from '../../providers/playlist';
+import { SetlistService } from '../../providers/setlist';
 import { Song } from '../../models/song';
 import { Note } from '../../models/note';
 import { Position } from '../models/position';
@@ -19,7 +19,7 @@ import { StickyNoteComponent } from '../../components/sticky-note/sticky-note';
 export class SongDetailsPage {
   private songId: number;
   loading: Loading;
-  listType: string; // playlist & songlist
+  listType: string; // setlist & songlist
   song: Song;
   savedKey: string;
   fontSize: number;
@@ -37,7 +37,7 @@ export class SongDetailsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public popoverCtrl: PopoverController, public events: Events,
-              private backandService: Backand, private playlistService: PlaylistService,
+              private backandService: Backand, private setlistService: SetlistService,
               private viewCtrl: ViewController, public AppConfig: AppConfig,
               private storage: Storage, private loadingCtrl: LoadingController,
               private alertCtrl: AlertController ) {
@@ -46,7 +46,7 @@ export class SongDetailsPage {
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.currentKey, isPlaylist: (this.listType === 'playlist') } );
+    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.currentKey, isSetlist: (this.listType === 'setlist') } );
     popover.present({
       ev: event
     });
@@ -131,7 +131,7 @@ export class SongDetailsPage {
 
   ngOnInit() {
     this.showLoading();
-    if(this.listType === 'playlist') {
+    if(this.listType === 'setlist') {
       let songBuffer = this.navParams.get('data');
       if(songBuffer.currentKey) {
         this.song = songBuffer;
@@ -154,7 +154,7 @@ export class SongDetailsPage {
   }
 
   ngAfterViewInit() {
-    if(this.listType === 'playlist' && this.song) {
+    if(this.listType === 'setlist' && this.song) {
       this.song.currentKey = this.savedKey;
     }
   }
@@ -163,11 +163,11 @@ export class SongDetailsPage {
 
     // re-subscribe
     this.events.unsubscribe('song:keyChanged');
-    this.events.unsubscribe('song:addToPlaylist');
+    this.events.unsubscribe('song:addToSetlist');
     this.events.unsubscribe('style:fontSizeChange');
 
     // set default font size
-    let font = (this.listType === 'playlist' && this.song && this.song.fontSize) ? this.song.fontSize : this.AppConfig.getFontSize();
+    let font = (this.listType === 'setlist' && this.song && this.song.fontSize) ? this.song.fontSize : this.AppConfig.getFontSize();
     this.fontSize = font;
 
     // keychange in popover
@@ -175,15 +175,15 @@ export class SongDetailsPage {
       this.song.currentKey = newKey;
     });
 
-    // add to playlist in popover
-    this.events.subscribe('song:addToPlaylist', () => {
+    // add to setlist in popover
+    this.events.subscribe('song:addToSetlist', () => {
       this.song.fontSize = this.fontSize;
-      if(this.listType === 'playlist') {
-        this.playlistService.editSong(this.song);
-        this.showAlert('Successfully update your playlist');
+      if(this.listType === 'setlist') {
+        this.setlistService.editSong(this.song);
+        this.showAlert('Successfully update your setlist');
       } else {
-        this.playlistService.addSong(this.song);
-        this.showAlert('Successfully add to your playlist');
+        this.setlistService.addSong(this.song);
+        this.showAlert('Successfully add to your setlist');
       }
     });
 

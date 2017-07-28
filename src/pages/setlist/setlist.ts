@@ -1,28 +1,28 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, PopoverController, AlertController } from 'ionic-angular';
 import { Song } from '../../models/song';
-import { PlaylistService } from '../../providers/playlist';
+import { SetlistService } from '../../providers/setlist';
 import { ItemSliding } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-playlist',
-  templateUrl: 'playlist.html',
+  selector: 'page-setlist',
+  templateUrl: 'setlist.html',
 })
-export class PlaylistPage {
-  playlist: Song[];
-  listType = 'playlist';
+export class SetlistPage {
+  setlist: Song[];
+  listType = 'setlist';
   currentSongIndex = -1;
   filteredList: Song[];
   filter: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private playlistService: PlaylistService, public events: Events,
+              private setlistService: SetlistService, public events: Events,
               public popoverCtrl: PopoverController, public alertCtrl: AlertController) {
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create('PlaylistPopover');
+    let popover = this.popoverCtrl.create('SetlistPopover');
     popover.present({
       ev: event
     });
@@ -42,8 +42,8 @@ export class PlaylistPage {
     this.navToSongDetail(song.id, this.listType, song);
   }
 
-  removeFromPlaylist(index: number, slidingItem: ItemSliding): void {
-    this.playlist = this.playlistService.removeSong(index);
+  removeFromSetlist(index: number, slidingItem: ItemSliding): void {
+    this.setlist = this.setlistService.removeSong(index);
     slidingItem.close();
   }
 
@@ -52,44 +52,44 @@ export class PlaylistPage {
     // if the value is an empty string don't filter the items
     if (filter && filter.trim() !== '') {
       filter = filter.toLowerCase();
-      this.filteredList = this.playlist.filter((song) => {
+      this.filteredList = this.setlist.filter((song) => {
         return !filter || (song.title ? ('' + song.title).toLowerCase().indexOf(filter) !== -1 : false)
          || (song.artist ? ('' + song.artist).toLowerCase().indexOf(filter) !== -1 : false);;
       })
     } else {
-      this.filteredList = this.playlist;
+      this.filteredList = this.setlist;
     }
   }
 
   reorderSongs(indexes) {
-    this.playlistService.reorderSongs(indexes);
+    this.setlistService.reorderSongs(indexes);
   }
 
   subSongChangeEvent(): void {
     this.events.subscribe('song:change', (data) => {
-      if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.playlist.length - 1) {
+      if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.setlist.length - 1) {
         this.currentSongIndex += data.direction;
         const directionStr = data.direction > 0 ? 'forward' : 'back';
-        this.navToSongDetail(this.playlist[this.currentSongIndex].id, this.listType, this.playlist[this.currentSongIndex], {direction: directionStr} );
+        this.navToSongDetail(this.setlist[this.currentSongIndex].id, this.listType, this.setlist[this.currentSongIndex], {direction: directionStr} );
         this.navCtrl.remove(data.viewIndex);
       }
     });
   }
 
   subClearAllEvent(): void {
-    this.events.subscribe('playlist:clearall', (data) => {
-      this.playlistService.clearAll()
+    this.events.subscribe('setlist:clearall', (data) => {
+      this.setlistService.clearAll()
       .then( res => {
-        this.playlist = res;
+        this.setlist = res;
         this.filteredList = [];
       });
     });
   }
 
   ionViewWillEnter() {
-    this.playlist = this.playlistService.getPlaylist();
-    this.filteredList = this.playlist;
-    console.log('GET playlist', this.playlist);
+    this.setlist = this.setlistService.getSetlist();
+    this.filteredList = this.setlist;
+    console.log('GET setlist', this.setlist);
   }
 
   ngOnInit() {

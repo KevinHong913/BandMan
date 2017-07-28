@@ -8,7 +8,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { Backand } from '../providers/backand';
 import { BackandService } from '@backand/angular2-sdk';
-import { PlaylistService } from '../providers/playlist';
+import { SetlistService } from '../providers/setlist';
 import { Ng2ChordTransposeModule } from 'ng2-chord-transpose';
 import { AppConfig } from '../providers/config';
 
@@ -56,7 +56,7 @@ const cloudSettings: CloudSettings = {
     SplashScreen,
     Backand,
     BackandService,
-    PlaylistService,
+    SetlistService,
     AppConfig,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

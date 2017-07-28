@@ -2,28 +2,28 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
 
 /**
- * Generated class for the PlaylistPopoverPage page.
+ * Generated class for the SetlistPopoverPage page.
  *
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
 @IonicPage()
 @Component({
-  selector: 'page-playlist-popover',
-  templateUrl: 'playlist-popover.html',
+  selector: 'page-setlist-popover',
+  templateUrl: 'setlist-popover.html',
 })
-export class PlaylistPopover {
+export class SetlistPopover {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public events: Events, private viewCtrl: ViewController) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PlaylistPopoverPage');
+    console.log('ionViewDidLoad SetlistPopoverPage');
   }
 
   onClearAllEvent(event) {
-    this.events.publish('playlist:clearall');
+    this.events.publish('setlist:clearall');
     this.viewCtrl.dismiss();
   }
 

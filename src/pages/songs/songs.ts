@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, AlertController, Loading, LoadingController } from 'ionic-angular';
 import { Backand } from '../../providers/backand';
 import { Song } from '../../models/song';
-import { PlaylistService } from '../../providers/playlist';
+import { SetlistService } from '../../providers/setlist';
 import { ItemSliding } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
@@ -20,7 +20,7 @@ export class SongsPage {
   filteredList: Song[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private backandService: Backand, public playlistService: PlaylistService,
+              private backandService: Backand, public setlistService: SetlistService,
               public events: Events, private storage: Storage,
               private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
   }
@@ -42,8 +42,8 @@ export class SongsPage {
     this.navToSongDetail(songId, this.listType);
   }
 
-  addToPlaylist(song: Song, slidingItem: ItemSliding): void {
-    this.playlistService.addSong(song);
+  addToSetlist(song: Song, slidingItem: ItemSliding): void {
+    this.setlistService.addSong(song);
     slidingItem.close();
   }
 

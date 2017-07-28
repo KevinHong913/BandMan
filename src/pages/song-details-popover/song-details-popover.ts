@@ -25,8 +25,8 @@ export class SongDetailsPopover {
     console.log("[popover] key: ", this.key);
   }
 
-  addToPlaylist() {
-    this.events.publish('song:addToPlaylist');
+  addToSetlist() {
+    this.events.publish('song:addToSetlist');
     this.viewCtrl.dismiss();
   }
 
@@ -37,7 +37,7 @@ export class SongDetailsPopover {
   ngOnInit() {
     if (this.navParams.data) {
       this.key = this.navParams.data.key;
-      this.addButtonText = this.navParams.data.isPlaylist ? 'Save' : 'Add to playlist';
+      this.addButtonText = this.navParams.data.isSetlist ? 'Save' : 'Add to setlist';
     }
   }
 
