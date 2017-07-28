@@ -14,7 +14,7 @@ sticky-note {
     z-index: 0;
 
     &.editMode {
-      z-index: 300;
+      z-index: 500;
     }
 
   }
@@ -27,23 +27,36 @@ sticky-note {
     height: 15px;
   }
 
-  .note-textarea {
-    width: 100%;
+  .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner,
+  .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner {
+    border: none;
+    box-shadow: none;
+  }
+
+  .note-item {
     height: 100%;
+    background-color: transparent;
+    padding: 0;
 
-    textarea {
-      height: 90%;
-      resize: none;
-      margin: 0;
+    .note-textarea {
       width: 100%;
-      font-size: 1.3em;
-      color: #111;
+      height: 100%;
 
-      &[disabled] {
-        color: $font-black;
-        opacity: 1;
+      textarea {
+        height: 90%;
+        resize: none;
+        margin: 0;
+        width: 100%;
+        font-size: 1.2em;
+        color: #111;
+
+        &[disabled] {
+          color: #222;
+          opacity: 1;
+        }
       }
     }
+
   }
 
   input {
@@ -65,7 +78,7 @@ sticky-note {
     width: 100%;
     height: 100%;
     background-color: rgba(40, 40, 40, 0.3);
-
+    z-index: 30;
   }
 
   .edit-content {
@@ -95,5 +108,4 @@ sticky-note {
       }
     }
   }
-
 }

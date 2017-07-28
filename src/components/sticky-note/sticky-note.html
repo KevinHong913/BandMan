@@ -1,4 +1,3 @@
-<!-- Generated template for the StickyNoteComponent component -->
 <div mwlResizable class="note"
     (pan)="onPanEvent($event)"
     [style.top.px]="note.position.top"
@@ -12,9 +11,11 @@
     (keyup)="onDataChange($event)"
     [ngClass]="{editMode: isEdit}">
     <div class="note-content">
+      <ion-item class="note-item">
       <ion-textarea #editTextarea class="note-textarea" autosize
       [(ngModel)]="note.data"
       [disabled]="isDisabled ? '' : null"></ion-textarea>
+      </ion-item>
     </div>
     <img src="http://i.imgur.com/eqzz2dl.gif" mwlResizeHandle class="resize-handle" [resizeEdges]="{bottom: true, right: true}">
 </div>
