@@ -18,9 +18,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-// import { StickyNoteComponent } from '../components/sticky-note/sticky-note';
-// import { AbsoluteDragDirective } from '../directives/absolute-drag/absolute-drag';
-
 const cloudSettings: CloudSettings = {
   'core': {
     'app_id': 'cd3298b7'
@@ -32,8 +29,6 @@ const cloudSettings: CloudSettings = {
   declarations: [
     MyApp,
     TabsPage,
-    // StickyNoteComponent,
-    // AbsoluteDragDirective,
   ],
   imports: [
     HttpModule,

@@ -179,10 +179,10 @@ export class SongDetailsPage {
     this.events.subscribe('song:addToSetlist', () => {
       this.song.fontSize = this.fontSize;
       if(this.listType === 'setlist') {
-        this.setlistService.editSong(this.song);
+        this.setlistService.editSong(1, this.song); // TODO
         this.showAlert('Successfully update your setlist');
       } else {
-        this.setlistService.addSong(this.song);
+        this.setlistService.addSong(1, this.song); // TODO
         this.showAlert('Successfully add to your setlist');
       }
     });

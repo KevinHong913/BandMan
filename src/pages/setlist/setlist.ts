@@ -43,7 +43,7 @@ export class SetlistPage {
   }
 
   removeFromSetlist(index: number, slidingItem: ItemSliding): void {
-    this.setlist = this.setlistService.removeSong(index);
+    // this.setlist = this.setlistService.removeSong(index);
     slidingItem.close();
   }
 
@@ -62,7 +62,7 @@ export class SetlistPage {
   }
 
   reorderSongs(indexes) {
-    this.setlistService.reorderSongs(indexes);
+    // this.setlistService.reorderSongs(indexes);
   }
 
   subSongChangeEvent(): void {
@@ -78,7 +78,7 @@ export class SetlistPage {
 
   subClearAllEvent(): void {
     this.events.subscribe('setlist:clearall', (data) => {
-      this.setlistService.clearAll()
+      this.setlistService.clearSongList(1)
       .then( res => {
         this.setlist = res;
         this.filteredList = [];
@@ -87,7 +87,7 @@ export class SetlistPage {
   }
 
   ionViewWillEnter() {
-    this.setlist = this.setlistService.getSetlist();
+    this.setlist = this.setlistService.getSetlist(1);
     this.filteredList = this.setlist;
     console.log('GET setlist', this.setlist);
   }

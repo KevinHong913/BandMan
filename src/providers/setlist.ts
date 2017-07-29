@@ -11,13 +11,13 @@ export class SetlistService {
 
   private setlists: any[];
 
-  constructor(public storage: Storage, public http: Http, private backandService: BackandService) {
+  constructor(public storage: Storage, private backandService: BackandService) {
     storage.get('setlists').then((response) => {
       if(response) {
         this.setlists = response;
       } else {
         this.setlists = [];
-        storage.set('setlists', this.setlist);
+        storage.set('setlists', this.setlists);
       }
     })
   }
@@ -102,7 +102,7 @@ export class SetlistService {
     let data = {
       title: newName
     };
-    this.backandService.object.update('setlist', setlistData.id, data)
+    this.backandService.object.update('setlist', this.setlists[index].id, data)
     .then(res => {
       console.log('object updated');
       this.setlists[index].data.title = newName;
@@ -142,9 +142,18 @@ export class SetlistService {
 
   public reorderSetlists(setlistIndexes: any) {
     let element = this.setlists[setlistIndexes.from];
-    this.setlists[index].data.splice(setlistIndexes.from, 1);
-    this.setlists[index].data.splice(setlistIndexes.to, 0, element);
+    this.setlists.splice(setlistIndexes.from, 1);
+    this.setlists.splice(setlistIndexes.to, 0, element);
   }
+
+
+
+  /** Setlist Page **/
+
+  public getSetlist(index: number): any {
+    return this.setlists[index];
+  }
+
 
   // Add song to index setlist, return current setlist
   public addSong(index: number, song: Song): Song[] {
@@ -171,7 +180,7 @@ export class SetlistService {
         }
       })
     }
-    return this.setlist[index];
+    return this.setlists[index];
   }
 
   public removeSong(index: number, songIndex: number) {
@@ -190,7 +199,7 @@ export class SetlistService {
   public clearSongList(index: number): Promise<any> {
     this.setlists[index].data = [];
     this.storage.set('setlist', this.setlists);
-    return Promise.resolve(this.setlist[index]);
+    return Promise.resolve(this.setlists[index]);
   }
 
 }

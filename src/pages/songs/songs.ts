@@ -43,7 +43,7 @@ export class SongsPage {
   }
 
   addToSetlist(song: Song, slidingItem: ItemSliding): void {
-    this.setlistService.addSong(song);
+    this.setlistService.addSong(1, song); // TODO
     slidingItem.close();
   }
 

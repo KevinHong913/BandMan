@@ -1,24 +1,43 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
+import { Song } from '../../models/song';
+import { SetlistService } from '../../providers/setlist';
+import { ItemSliding } from 'ionic-angular';
 
-/**
- * Generated class for the SetlistListPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
-
+@IonicPage()
 @Component({
   selector: 'page-setlist-list',
   templateUrl: 'setlist-list.html',
 })
 export class SetlistListPage {
+  setlists: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private setlistService: SetlistService, public events: Events,
+              public alertCtrl: AlertController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SetlistListPage');
+
+  gotToSetlist(setlist: any, index: number): void {
+    this.navCtrl.push('SetlistPage');
+  }
+
+  removeSetList(index: number, slidingItem: ItemSliding): void {
+    this.setlists = this.setlistService.deleteSetlist(index);
+    slidingItem.close();
+  }
+
+  reorderSetList(indexes) {
+    this.setlistService.reorderSetlists(indexes);
+  }
+
+
+  ionViewWillEnter() {
+    this.setlists = this.setlistService.getSetlists();
+    console.log('GET setlists', this.setlists);
+  }
+
+  ngOnInit() {
   }
 
 }
