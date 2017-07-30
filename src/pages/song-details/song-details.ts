@@ -75,8 +75,8 @@ export class SongDetailsPage {
       data: message,
       color: 'yellow',
       position: {
-        top: 50 * this.song.notes.length,
-        left: 100 * this.song.notes.length
+        top: (50 * (this.song.notes.length + 1)) % 300,
+        left: (100 * (this.song.notes.length + 1)) % 600
       },
       height: 40,
       width: 100
