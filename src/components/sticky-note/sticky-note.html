@@ -21,10 +21,11 @@
 </div>
 
 <div class="edit-wrapper" *ngIf="isEdit"
-  [style.top.px]="note.position.top - 24" [style.left.px]="note.position.left - 10">
+  [style.top.px]="note.position.top - 20" [style.left.px]="note.position.left">
   <div class="edit-content">
     <!-- <button (click)="onEditNote($event);" class="note-edit-btn">Edit</button> -->
     <button (click)="onRemoveNote($event)" class="note-remove-btn">Delete</button>
+    <span class="seperator">|</span>
     <button (click)="onEditDone($event)" class="note-done-btn">Done</button>
   </div>
 </div>
