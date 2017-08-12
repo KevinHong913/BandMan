@@ -1,3 +1,7 @@
 <ion-list class="popover-page">
   <button ion-item (click)="onClearAllEvent($event)">Clear all</button>
+  <button ion-item *ngIf="setlist?.permission === 'L'" (click)="onShareEvent($event)">Share</button>
+  <!-- show if permission is not 'l' -->
+  <button ion-item *ngIf="setlist?.permission !== 'L'" (click)="onOpenSettingEvent($event)">Setting</button>
+  <button ion-item (click)="onDeleteEvent($event)">Delete</button>
 </ion-list>

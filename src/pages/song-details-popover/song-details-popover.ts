@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ViewController, AlertController } from 'ionic-angular';
 import { Ng2ChordTransposeService } from 'ng2-chord-transpose';
+import { SetlistService } from '../../providers/setlist';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,8 @@ export class SongDetailsPopover {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private ng2ChordTransposeService: Ng2ChordTransposeService, public events: Events,
-              public viewCtrl: ViewController) {
+              public viewCtrl: ViewController, private alertCtrl: AlertController,
+              private setlistService: SetlistService) {
     this.keysList = ng2ChordTransposeService.getKeysList();
   }
 
@@ -25,8 +27,41 @@ export class SongDetailsPopover {
     console.log("[popover] key: ", this.key);
   }
 
+  // what if the user does not have access to the setlist
+
+  // Move to new modal service
   addToSetlist() {
-    this.events.publish('song:addToSetlist');
+    const nameList = this.setlistService.getSetlistsName();
+    const options = nameList.map( (title, index) => {
+      return {
+        type: 'radio',
+        label: title,
+        value: index.toString()
+      }
+    });
+    const alert = this.alertCtrl.create({
+      title: 'Add to setlist',
+      inputs: options,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Add setlist cancelled');
+          }
+        },
+        {
+          text: 'Add',
+          handler: (data) => {
+            this.triggerAddEvent(data);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  triggerAddEvent(index: number) {
+    this.events.publish('song:addToSetlist', {setlistIndex: index});
     this.viewCtrl.dismiss();
   }
 

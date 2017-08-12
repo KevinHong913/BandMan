@@ -19,7 +19,7 @@ export class SetlistListPage {
 
 
   gotToSetlist(setlist: any, index: number): void {
-    this.navCtrl.push('SetlistPage');
+    this.navCtrl.push('SetlistPage', {setlistIndex: index});
   }
 
   removeSetList(index: number, slidingItem: ItemSliding): void {
@@ -29,6 +29,34 @@ export class SetlistListPage {
 
   reorderSetList(indexes) {
     this.setlistService.reorderSetlists(indexes);
+  }
+
+  presentCreateSetlistPrompt(event) {
+    let prompt = this.alertCtrl.create({
+      title: 'New Setlist',
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'Setlist Title'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log('Saved clicked', data);
+            this.setlists = this.setlistService.createSetlist(data.title);
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
 

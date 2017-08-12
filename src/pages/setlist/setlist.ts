@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, PopoverController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, PopoverController, AlertController, ModalController } from 'ionic-angular';
 import { Song } from '../../models/song';
 import { SetlistService } from '../../providers/setlist';
 import { ItemSliding } from 'ionic-angular';
@@ -10,7 +10,8 @@ import { ItemSliding } from 'ionic-angular';
   templateUrl: 'setlist.html',
 })
 export class SetlistPage {
-  setlist: Song[];
+  setlistIndex = -1;
+  setlist: any;
   listType = 'setlist';
   currentSongIndex = -1;
   filteredList: Song[];
@@ -18,11 +19,14 @@ export class SetlistPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private setlistService: SetlistService, public events: Events,
-              public popoverCtrl: PopoverController, public alertCtrl: AlertController) {
+              public popoverCtrl: PopoverController, public alertCtrl: AlertController,
+              private modalCtrl: ModalController) {
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create('SetlistPopover');
+    let popover = this.popoverCtrl.create('SetlistPopover', {
+      setlist: this.setlist
+    });
     popover.present({
       ev: event
     });
@@ -52,12 +56,12 @@ export class SetlistPage {
     // if the value is an empty string don't filter the items
     if (filter && filter.trim() !== '') {
       filter = filter.toLowerCase();
-      this.filteredList = this.setlist.filter((song) => {
+      this.filteredList = this.setlist.data.filter((song) => {
         return !filter || (song.title ? ('' + song.title).toLowerCase().indexOf(filter) !== -1 : false)
          || (song.artist ? ('' + song.artist).toLowerCase().indexOf(filter) !== -1 : false);;
       })
     } else {
-      this.filteredList = this.setlist;
+      this.filteredList = this.setlist.data;
     }
   }
 
@@ -77,8 +81,8 @@ export class SetlistPage {
   }
 
   subClearAllEvent(): void {
-    this.events.subscribe('setlist:clearall', (data) => {
-      this.setlistService.clearSongList(1)
+    this.events.subscribe('setlist:clear', (data) => {
+      this.setlistService.clearSongList(this.setlistIndex)
       .then( res => {
         this.setlist = res;
         this.filteredList = [];
@@ -86,15 +90,46 @@ export class SetlistPage {
     });
   }
 
+  subShareEvent(): void {
+    this.events.subscribe('setlist:share', (data) => {
+
+      //open setting modal
+      let modal = this.modalCtrl.create('SetlistSettingModalComponent', {});
+      modal.present();
+      // this.setlistService.uploadSetlist(this.setlistIndex)
+      // .then( res => {
+      // });
+    });
+  }
+
+  subOpenSettingEvent(): void {
+    this.events.subscribe('setlist:setting', (data) => {
+      
+    });
+  }
+
+  subDeleteEvent(): void {
+    this.events.subscribe('setlist:delete', (data) => {
+      this.setlistService.deleteSetlist(this.setlistIndex)
+      .then( res => {
+
+      });
+    });
+  }
+
   ionViewWillEnter() {
-    this.setlist = this.setlistService.getSetlist(1);
-    this.filteredList = this.setlist;
+    this.setlistIndex = this.navParams.get('setlistIndex');
+    this.setlist = this.setlistService.getSetlistByIndex(this.setlistIndex);
+    this.filteredList = this.setlist.data;
     console.log('GET setlist', this.setlist);
   }
 
   ngOnInit() {
     this.subSongChangeEvent();
     this.subClearAllEvent();
+    this.subShareEvent();
+    this.subOpenSettingEvent();
+    this.subDeleteEvent();
   }
 
 }

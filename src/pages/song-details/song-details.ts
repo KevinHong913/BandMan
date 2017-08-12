@@ -176,15 +176,16 @@ export class SongDetailsPage {
     });
 
     // add to setlist in popover
-    this.events.subscribe('song:addToSetlist', () => {
+    this.events.subscribe('song:addToSetlist', (data) => {
+      console.log('add to setlist', data);
       this.song.fontSize = this.fontSize;
-      if(this.listType === 'setlist') {
-        this.setlistService.editSong(1, this.song); // TODO
+      // if(this.listType === 'setlist') {
+        this.setlistService.addToSetlist(data.setlistIndex, this.song); // TODO
         this.showAlert('Successfully update your setlist');
-      } else {
-        this.setlistService.addSong(1, this.song); // TODO
-        this.showAlert('Successfully add to your setlist');
-      }
+      // } else {
+      //   this.setlistService.addSong(1, this.song); // TODO
+      //   this.showAlert('Successfully add to your setlist');
+      // }
     });
 
     // font size change

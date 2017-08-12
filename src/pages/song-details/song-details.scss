@@ -2,13 +2,19 @@ page-song-details {
 
   .chord-area-wrapper {
     margin-left: 4%;
+    margin-top: 5%;
   }
 
   .up-down-container {
-    margin-top: 25px;
-    margin-bottom: 45px;
+    // margin-top: 25px;
+    position: fixed;
+    // top: 100px;
+    right: 30px;
 
     .up-down-btn {
+      display: block;
+      margin-bottom: 10px;
+      border-radius: 5px;
       width: 80px;
       height: 30px;
       font-size: 16px;

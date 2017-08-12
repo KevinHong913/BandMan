@@ -42,10 +42,10 @@ export class SongsPage {
     this.navToSongDetail(songId, this.listType);
   }
 
-  addToSetlist(song: Song, slidingItem: ItemSliding): void {
-    this.setlistService.addSong(1, song); // TODO
-    slidingItem.close();
-  }
+  // addToSetlist(song: Song, slidingItem: ItemSliding): void {
+  //   this.setlistService.addSong(1, song); // TODO
+  //   slidingItem.close();
+  // }
 
   getSongList(refresher?: any): void {
     this.showLoading();

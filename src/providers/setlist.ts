@@ -10,6 +10,7 @@ import { BackandService } from '@backand/angular2-sdk';
 export class SetlistService {
 
   private setlists: any[];
+  private userId: any;
 
   constructor(public storage: Storage, private backandService: BackandService) {
     storage.get('setlists').then((response) => {
@@ -19,11 +20,22 @@ export class SetlistService {
         this.setlists = [];
         storage.set('setlists', this.setlists);
       }
+    });
+
+    this.backandService.user.getUserDetails()
+    .then((data: any) => {
+      if(data.data) {
+        this.userId = data.data.userId;
+      }
     })
   }
 
   public getSetlists(): any {
     return this.setlists;
+  }
+
+  public getSetlistsName(): any[] {
+    return this.setlists.map((setlist) =>  { return setlist.title; });
   }
 
   /**
@@ -36,13 +48,14 @@ export class SetlistService {
     let newSetlist = {
       title: title,
       data: [],
-      createdBy: 0,
-      permission: 'E',
-      // isLocal: true
+      createdBy: this.userId,
+      permission: 'L',
+      private: true
     };
 
     this.setlists.push(newSetlist);
     this.storage.set('setlists', this.setlists);
+    return this.setlists;
   }
 
 
@@ -80,48 +93,40 @@ export class SetlistService {
   // how to know if setlist is from server or from local? (isLocal)
   // how to know
 
-  public uploadSetlist(setlistData: any): any {
+  public uploadSetlist(index: any): Promise<any> {
     // set permission (can view, can edit)
     // upload to the server
     // return id
+    let setlistData = this.setlists[index];
     setlistData.data = JSON.stringify(setlistData.data);
-    this.backandService.object.create('setlist', setlistData)
+    return this.backandService.object.create('setlist', setlistData)
     .then(res => {
       console.log('object updated');
       return res;
     })
-    .catch(err => {
-      console.log(err);
-    });
 
   }
 
   // rename
-  public renameSetlist(index: number, setlistId: number, newName: string): any {
+  public renameSetlist(index: number, setlistId: number, newName: string): Promise<any> {
 
     let data = {
       title: newName
     };
-    this.backandService.object.update('setlist', this.setlists[index].id, data)
+    return this.backandService.object.update('setlist', this.setlists[index].id, data)
     .then(res => {
       console.log('object updated');
       this.setlists[index].data.title = newName;
       this.storage.set('setlists', this.setlists);
       return res;
     })
-    .catch(err => {
-      console.log(err);
-    });
 
     // set storage
   }
 
-  public getSetlistById(setlistId: any): any {
+  public getSetlistById(setlistId: any): Promise<any> {
     // get Setlist from server by id
-    this.backandService.object.getOne('setlist', setlistId)
-    .then(res => {
-      return res;
-    })
+    return this.backandService.object.getOne('setlist', setlistId)
   }
 
   /**
@@ -130,7 +135,7 @@ export class SetlistService {
    * if can edit, then whenever the user add a song it is updated
    */
 
-  public deleteSetlist(index: number) {
+  public deleteSetlist(index: number): any {
     this.setlists.splice(index, 1);
     this.storage.set('setlists', this.setlists);
     console.log('[Setlists]: index ' + index + ' removed');
@@ -150,19 +155,23 @@ export class SetlistService {
 
   /** Setlist Page **/
 
-  public getSetlist(index: number): any {
+  public getSetlistByIndex(index: number): any {
     return this.setlists[index];
   }
 
 
   // Add song to index setlist, return current setlist
-  public addSong(index: number, song: Song): Song[] {
+  public addToSetlist(index: number, song: Song): Song[] {
     if(song.id && this.setlists[index]) {
-      if( this.setlists[index].data.find((obj) => { return obj.id === song.id; }) === undefined ) {
+      const songIndex = this.setlists[index].data.findIndex((obj) => { return obj.id === song.id; });
+      if(songIndex  === -1) { // song not exist in setlist
         this.setlists[index].data.push(song);
-        this.storage.set('setlists', this.setlists);
-        console.log('[Setlists]: '+ song.title + ' added');
+        console.log('[Setlists]: '+ this.setlists[index].title + ': ' + song.title + ' added');
+      } else {
+        this.setlists[index].data[songIndex] = song;
+        console.log('[Setlists]: '+ this.setlists[index].title + ': ' + song.title + ' updated');
       }
+      this.storage.set('setlists', this.setlists);
     } else {
       console.error('[Setlist] Error: no id for the input song.');
     }

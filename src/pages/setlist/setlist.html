@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar class="bm-navbar" color="primary">
-    <ion-title>Setlist</ion-title>
+    <ion-title>{{ setlist?.title }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="more"></ion-icon>
@@ -28,7 +28,7 @@
       </ion-item-options>
     </ion-item-sliding>
 
-    <ion-item *ngIf="setlist?.length === 0">
+    <ion-item *ngIf="setlist?.data.length === 0">
       <h2 text-center>The setlist is empty. Go add some song to setlist!</h2>
     </ion-item>
   </ion-list>
