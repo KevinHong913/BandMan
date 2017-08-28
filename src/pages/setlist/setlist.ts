@@ -36,6 +36,7 @@ export class SetlistPage {
     let params = {
       songId: songId,
       listType: listType,
+      setlistIndex: this.setlistIndex,
       data: song
     };
     this.navCtrl.push('SongDetailsPage', params, options );
@@ -70,6 +71,8 @@ export class SetlistPage {
   }
 
   subSongChangeEvent(): void {
+    this.events.unsubscribe('song:change');
+
     this.events.subscribe('song:change', (data) => {
       if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.setlist.length - 1) {
         this.currentSongIndex += data.direction;
@@ -81,6 +84,7 @@ export class SetlistPage {
   }
 
   subClearAllEvent(): void {
+    this.events.unsubscribe('setlist:clear');
     this.events.subscribe('setlist:clear', (data) => {
       this.setlistService.clearSongList(this.setlistIndex)
       .then( res => {
@@ -91,11 +95,11 @@ export class SetlistPage {
   }
 
   subShareEvent(): void {
+    this.events.unsubscribe('setlist:share');
     this.events.subscribe('setlist:share', (data) => {
 
       //open setting modal
-      let modal = this.modalCtrl.create('SetlistSettingModalComponent', {});
-      modal.present();
+      this.modalCtrl.create('SetlistSettingModalComponent', {index: this.setlistIndex, setlist: this.setlist, isInit: true}).present();
       // this.setlistService.uploadSetlist(this.setlistIndex)
       // .then( res => {
       // });
@@ -103,12 +107,15 @@ export class SetlistPage {
   }
 
   subOpenSettingEvent(): void {
+    this.events.unsubscribe('setlist:setting');
     this.events.subscribe('setlist:setting', (data) => {
-      
+      this.modalCtrl.create('SetlistSettingModalComponent', {index: this.setlistIndex, setlist: this.setlist, isInit: false}).present();
+
     });
   }
 
   subDeleteEvent(): void {
+    this.events.unsubscribe('setlist:delete');
     this.events.subscribe('setlist:delete', (data) => {
       this.setlistService.deleteSetlist(this.setlistIndex)
       .then( res => {

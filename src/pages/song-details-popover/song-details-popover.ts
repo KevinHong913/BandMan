@@ -10,8 +10,10 @@ import { SetlistService } from '../../providers/setlist';
 })
 export class SongDetailsPopover {
   keysList: string[];
+  setlistIndex: number;
   key: string;
   fontSizeChangeUnit = 2;
+  isSetlist: boolean;
 
   addButtonText: string;
 
@@ -20,6 +22,8 @@ export class SongDetailsPopover {
               public viewCtrl: ViewController, private alertCtrl: AlertController,
               private setlistService: SetlistService) {
     this.keysList = ng2ChordTransposeService.getKeysList();
+    this.isSetlist = navParams.get('isSetlist');
+    this.setlistIndex = navParams.get('setlistIndex') | -1;
   }
 
   keyValueChange(key) {
@@ -31,12 +35,14 @@ export class SongDetailsPopover {
 
   // Move to new modal service
   addToSetlist() {
+
     const nameList = this.setlistService.getSetlistsName();
     const options = nameList.map( (title, index) => {
       return {
         type: 'radio',
         label: title,
-        value: index.toString()
+        value: index.toString(),
+        checked: (index === this.setlistIndex)
       }
     });
     const alert = this.alertCtrl.create({
@@ -72,7 +78,7 @@ export class SongDetailsPopover {
   ngOnInit() {
     if (this.navParams.data) {
       this.key = this.navParams.data.key;
-      this.addButtonText = this.navParams.data.isSetlist ? 'Save' : 'Add to setlist';
+      this.addButtonText = this.isSetlist ? 'Save' : 'Add to setlist';
     }
   }
 

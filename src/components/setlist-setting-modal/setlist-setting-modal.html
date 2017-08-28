@@ -1,30 +1,46 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Share Setlist
+      {{ +setlist.id > 0 ? "Setting" : "Upload" }}
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
-        <span ion-text color="primary" showWhen="ios">Cancel</span>
-        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+        <span ion-text color="primary">Cancel</span>
+        <!-- <ion-icon name="md-close" showWhen="android, windows"></ion-icon> -->
       </button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <!-- <ion-avatar item-start>
-        <img src="{{character.image}}">
-      </ion-avatar> -->
-      <h2>eeweroij</h2>
-      <p>ipoipoip</p>
-    </ion-item>
-    <!-- <ion-item *ngFor="let item of character['items']">
-      {{item.title}}
-      <ion-note item-end>
-        {{item.note}}
-      </ion-note>
-    </ion-item> -->
-  </ion-list>
+    <ion-list no-border>
+      <ion-item *ngIf="setlist.id > 0">
+        <ion-label>Title</ion-label>
+        <ion-input item-end type="text" [(ngModel)]="setlist.title" required [disabled]="!setlist.isOwner"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="setlist.id > 0">
+        <h2 item-start>ID</h2>
+        <!-- ID -->
+        <ion-note item-end>{{ setlist?.id }}</ion-note>
+      </ion-item>
+    </ion-list>
+
+    <ion-list radio-group [(ngModel)]="setlist.permission" [disabled]="isRadioDisabled">
+      <ion-list-header>Privacy</ion-list-header>
+      <ion-item>
+        <ion-label>Private</ion-label>
+        <ion-radio checked="true" value="P" [disabled]="isRadioDisabled"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Public (Read only)</ion-label>
+        <ion-radio value="R" [disabled]="isRadioDisabled"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Public (Read and Edit)</ion-label>
+        <ion-radio value="E" [disabled]="isRadioDisabled"></ion-radio>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button *ngIf="setlist.isOwner || (!setlist.isOwner && origPermission === 'E')" (click)="shareSetlist()">{{ +setlist.id > 0 ? "Save" : "Share" }}</button>
+
+    <button ion-button *ngIf="setlist.isOwner" (click)="deleteSetlist()" color="danger">Delete Setlist from server</button>
 </ion-content>

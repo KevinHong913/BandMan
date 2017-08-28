@@ -24,6 +24,7 @@ export class SongDetailsPage {
   savedKey: string;
   fontSize: number;
   offsetTop: number;
+  setlistIndex: number;
   // notes: any = [];
   fabsMetaData: String[] = [
     'Fade In',
@@ -43,10 +44,15 @@ export class SongDetailsPage {
               private alertCtrl: AlertController ) {
     this.songId = navParams.get('songId');
     this.listType = navParams.get('listType');
+    this.setlistIndex = navParams.get('setlistIndex');
   }
 
   presentPopover(event) {
-    let popover = this.popoverCtrl.create('SongDetailsPopover', {key: this.song.currentKey, isSetlist: (this.listType === 'setlist') } );
+    let popover = this.popoverCtrl.create('SongDetailsPopover', {
+      key: this.song.currentKey,
+      isSetlist: (this.listType === 'setlist'),
+      setlistIndex: this.setlistIndex
+    });
     popover.present({
       ev: event
     });
@@ -113,6 +119,29 @@ export class SongDetailsPage {
     });
   }
 
+  loadSetlistSong(songBuffer: any) {
+    this.storage.get('song:' + this.songId).then(res => {
+      if(res) {
+        this.song = res;
+        this.savedKey = songBuffer.currentKey;
+        this.song.currentKey = res.key;
+        this.song.notes = songBuffer.notes;
+        this.song.fontSize = songBuffer.fontSize;
+        this.loading.dismiss();
+      } else {
+        this.backandService.getSongById(this.songId)
+        .then( (response) => {
+          this.song = response;
+          this.savedKey = songBuffer.currentKey;
+          this.song.currentKey = response.key;
+          this.song.notes = songBuffer.notes;
+          this.storage.set('song:' + this.songId, response);
+          this.loading.dismiss();
+        });
+      }
+    });
+  }
+
   onNoteChange(event: any, index: number) {
     this.song.notes[index] = event;
   }
@@ -134,10 +163,7 @@ export class SongDetailsPage {
     if(this.listType === 'setlist') {
       let songBuffer = this.navParams.get('data');
       if(songBuffer.currentKey) {
-        this.song = songBuffer;
-        this.savedKey = songBuffer.currentKey;
-        this.song.currentKey = songBuffer.key;
-        this.loading.dismiss();
+        this.loadSetlistSong(songBuffer);
       } else {
         this.loadSong();
       }
@@ -154,9 +180,11 @@ export class SongDetailsPage {
   }
 
   ngAfterViewInit() {
-    if(this.listType === 'setlist' && this.song) {
-      this.song.currentKey = this.savedKey;
-    }
+    setTimeout(() => {
+      if(this.listType === 'setlist' && this.song) {
+        this.song.currentKey = this.savedKey;
+      }
+    }, 500); // this will not work if the internet is too slow...
   }
 
   ionViewWillEnter() {
@@ -180,8 +208,9 @@ export class SongDetailsPage {
       console.log('add to setlist', data);
       this.song.fontSize = this.fontSize;
       // if(this.listType === 'setlist') {
-        this.setlistService.addToSetlist(data.setlistIndex, this.song); // TODO
+        this.setlistService.addToSetlist(data.setlistIndex, this.song);
         this.showAlert('Successfully update your setlist');
+        console.log('after add', this.song);
       // } else {
       //   this.setlistService.addSong(1, this.song); // TODO
       //   this.showAlert('Successfully add to your setlist');

@@ -2,7 +2,7 @@
   <ion-navbar class="bm-navbar" color="primary">
     <ion-title>Setlist</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="presentCreateSetlistPrompt($event)">
+      <button ion-button icon-only (click)="presentNewsetlistPopover($event)">
         <ion-icon name="add-circle"></ion-icon>
       </button>
     </ion-buttons>
@@ -11,6 +11,10 @@
 
 
 <ion-content>
+  <ion-refresher (ionRefresh)="setlistRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-list reorder="true" (ionItemReorder)="reorderSetlists($event)">
     <ion-item-sliding #slidingItem class="setlist-list-item" *ngFor="let setlist of setlists; let i = index">
       <button class="setlist-item" ion-item (click)="gotToSetlist(setlist, i)">
