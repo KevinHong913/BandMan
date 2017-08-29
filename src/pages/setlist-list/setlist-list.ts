@@ -22,7 +22,7 @@ export class SetlistListPage {
     this.navCtrl.push('SetlistPage', {setlistIndex: index});
   }
 
-  removeSetList(index: number, slidingItem: ItemSliding): void {
+  removeSetList(index: number, slidingItem?: ItemSliding): void {
     let prompt = this.alertCtrl.create({
       title: 'Delete Confirm',
       subTitle: 'Are you sure you want to delete this setlist?',
@@ -35,11 +35,16 @@ export class SetlistListPage {
         text: 'Delete',
         handler: data => {
           console.log('Delete clicked', data);
-          this.setlists = this.setlistService.deleteSetlist(index);
+          this.setlistService.deleteSetlist(index)
+          .then(response => {
+            this.setlists = response;
+          });
         }
       }]
     }).present();
-    slidingItem.close();
+    if(slidingItem) {
+      slidingItem.close();
+    }
   }
 
   reorderSetList(indexes) {
@@ -54,27 +59,44 @@ export class SetlistListPage {
   }
 
   setlistRefresh(refresher?) {
-    this.setlistService.getSetlists(true)
-    .then(response => {
-      this.setlists = response;
-      if(refresher) {
-        refresher.complete();
-      }
-    })
-    .catch(error => {
-      if(refresher) {
-        refresher.complete();
-      }
-    });
+    let prompt = this.alertCtrl.create({
+      title: 'Warning',
+      subTitle: 'This action will fetch the setlist you own and overwrite the duplicated ones. Are you sure you want to continue?',
+      buttons: [{
+        text: 'No',
+        handler: data => {
+          console.log('Cancel clicked');
+          refresher.complete();
 
+        }
+      }, {
+        text: 'Yes',
+        handler: data => {
+          console.log('Yes clicked', data);
+          this.setlistService.getSetlists(true)
+          .then(response => {
+            this.setlists = response;
+            if(refresher) {
+              refresher.complete();
+            }
+          })
+          .catch(error => {
+            if(refresher) {
+              refresher.complete();
+            }
+          });
+        }
+      }]
+    }).present();
   }
 
   getSetlistById(id: number) {
-    this.setlistService.getSetlistById(id)
+    this.setlistService.getSetlistById(id, false)
     .then( response => {
       if(response.success) {
         this.setlistService.addSetlist(response.data);
       } else {
+        console.log(response);
         this.alertCtrl.create({
           title: 'Error',
           subTitle: response.message,
@@ -101,7 +123,7 @@ export class SetlistListPage {
   ionViewWillEnter() {
     this.setlistService.getSetlists()
     .then(response => {
-      this.setlists = response; 
+      this.setlists = response;
     });
     console.log('GET setlists', this.setlists);
   }

@@ -66,6 +66,37 @@ export class SetlistPage {
     }
   }
 
+  setlistRefresh(refresher?) {
+    let prompt = this.alertCtrl.create({
+      title: 'Warning',
+      subTitle: 'This action will overwrite your existing setlist. Are you sure you want to continue?',
+      buttons: [{
+        text: 'Cancel',
+        handler: data => {
+          console.log('Cancel clicked');
+          refresher.complete();
+        }
+      }, {
+        text: 'Yes',
+        handler: data => {
+          console.log('Yes clicked', data);
+          this.setlistService.getSetlistById(+this.setlist.id, true)
+          .then(response => {
+            this.setlist = response;
+            if(refresher) {
+              refresher.complete();
+            }
+          })
+          .catch(error => {
+            if(refresher) {
+              refresher.complete();
+            }
+          });
+        }
+      }]
+    }).present();
+  }
+
   reorderSongs(indexes) {
     // this.setlistService.reorderSongs(indexes);
   }
@@ -119,7 +150,7 @@ export class SetlistPage {
     this.events.subscribe('setlist:delete', (data) => {
       this.setlistService.deleteSetlist(this.setlistIndex)
       .then( res => {
-
+        this.navCtrl.pop();
       });
     });
   }

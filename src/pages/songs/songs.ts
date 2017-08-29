@@ -5,6 +5,7 @@ import { Song } from '../../models/song';
 import { SetlistService } from '../../providers/setlist';
 import { ItemSliding } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { Network } from '@ionic-native/network';
 
 @IonicPage()
 @Component({
@@ -18,11 +19,16 @@ export class SongsPage {
   currentSongIndex = -1; // start with -1
   filter: string;
   filteredList: Song[];
+  isOffline: boolean = false;
+
+  onConnect: any;
+  onDisconnect: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private backandService: Backand, public setlistService: SetlistService,
               public events: Events, private storage: Storage,
-              private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+              private alertCtrl: AlertController, private loadingCtrl: LoadingController,
+              private network: Network) {
   }
 
   navToSongDetail(songId: number, listType: string, options: any = {}): void {
@@ -38,8 +44,12 @@ export class SongsPage {
   }
 
   goToSong(songId: number, index: number): void {
-    this.currentSongIndex = index;
-    this.navToSongDetail(songId, this.listType);
+    if(this.isOffline) {
+      this.showOfflineAlert();
+    } else {
+      this.currentSongIndex = index;
+      this.navToSongDetail(songId, this.listType);
+    }
   }
 
   // addToSetlist(song: Song, slidingItem: ItemSliding): void {
@@ -47,34 +57,55 @@ export class SongsPage {
   //   slidingItem.close();
   // }
 
+  showOfflineAlert() {
+    this.alertCtrl.create({
+      title: 'Offline',
+      subTitle: 'You are currently offline...',
+      buttons: [{
+        text: 'OK'
+      }]
+    }).present();
+  }
+
   getSongList(refresher?: any): void {
-    this.showLoading();
-    this.backandService.getSongList()
-    .then(response => {
+    if(this.isOffline) {
+      this.showOfflineAlert();
+      this.loadListFromStorage();
+    } else {
+      this.showLoading();
+      this.backandService.getSongList()
+      .then(response => {
+        this.songList = response;
+        this.filteredList = response;
+        this.storage.set('songList', this.songList);
+        if(refresher) {
+          refresher.complete();
+        }
+        this.loading.dismiss();
+      }, err => {
+        this.loading.dismiss();
+        this.alertCtrl.create({
+          title: 'Warning',
+          subTitle: 'Cannot get song list',
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              this.isOffline = true;
+              this.loadListFromStorage();
+              if(refresher) {
+                refresher.cancel();
+              }
+            }
+          }]
+        }).present();
+      })
+    }
+  }
+
+  loadListFromStorage() {
+    this.storage.get('songList').then(response => {
       this.songList = response;
       this.filteredList = response;
-      this.storage.set('songList', this.songList);
-      if(refresher) {
-        refresher.complete();
-      }
-      this.loading.dismiss();
-    }, err => {
-      this.loading.dismiss();
-      this.alertCtrl.create({
-        title: 'Warning',
-        subTitle: 'Cannot get song list',
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            this.storage.get('songList').then(response => {
-              this.songList = response;
-            })
-            if(refresher) {
-              refresher.cancel();
-            }
-          }
-        }]
-      }).present();
     })
   }
 
@@ -111,7 +142,18 @@ export class SongsPage {
   }
 
   ionViewWillEnter() {
+    this.onConnect = this.network.onConnect().subscribe(data => {
+      this.isOffline = false;
+    }, error => console.error(error));
 
+    this.onDisconnect = this.network.onDisconnect().subscribe(data => {
+      this.isOffline = true;
+    }, error => console.error(error));
+  }
+
+  ionViewWillLeave(){
+    this.onConnect.unsubscribe();
+    this.onDisconnect.unsubscribe();
   }
 
   ngOnInit() {

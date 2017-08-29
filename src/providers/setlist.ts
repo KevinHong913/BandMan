@@ -41,12 +41,15 @@ export class SetlistService {
             return data.id === fetchList[i].id;
           })
 
+          fetchList[i].data = JSON.parse(fetchList[i].data);
+          fetchList[i].isOwner = (this.userId === +fetchList[i].createdBy)
           if(index > -1) {
             this.setlists[index] = fetchList[i];
           } else {
             this.setlists.unshift(fetchList[i]);
           }
         }
+        this.storage.set('setlists', this.setlists);
         return this.setlists;
       })
     } else {
@@ -169,15 +172,17 @@ export class SetlistService {
     return this.backandService.query.post('GetSetlistsByUser', {userId: userId})
   }
 
-  public getSetlistById(setlistId: any): Promise<any> {
+  public getSetlistById(setlistId: any, force: boolean = false): Promise<any> {
     // get Setlist from server by id
-    const isInList = this.setlists.findIndex((obj) => { return obj.id === setlistId; });
-    if(isInList !== -1) {
-      return Promise.resolve({error: 'The setlist already exist'})
+    const isInList = this.setlists.findIndex((obj) => { return obj.id === +setlistId; });
+    if(!force && isInList !== -1) {
+      return Promise.resolve({succuss: false, message: 'The setlist already exist'})
     } else {
       return this.backandService.object.action.get('setlist', 'GetSetlistById', { "setlistId": setlistId })
         .then(response => {
-          response.data.data.isOwner = (this.userId === +response.data.createdBy)
+          if(response.data.success) {
+            response.data.data.isOwner = (this.userId === +response.data.createdBy)
+          }
           return response.data;
         })
         .catch(error => {
@@ -197,18 +202,24 @@ export class SetlistService {
    * if can edit, then whenever the user add a song it is updated
    */
 
-  public deleteSetlist(index: number, options?: any): any {
+  public deleteSetlist(index: number, options?: any): Promise<any> {
+    const setlistId = this.setlists[index].id;
     this.setlists.splice(index, 1);
     this.storage.set('setlists', this.setlists);
     console.log('[Setlists]: index ' + index + ' removed');
 
 
     if(options && options.fromServer) {
-      // delete from server 
+      // delete from server
+      return this.backandService.object.remove('setlist', setlistId)
+      .then(response => {
+        console.log('remove from server', response);
+        return this.setlists;
+      })
     }
     // check if its on server
     // also when user trying to refresh, show error message that the playlist no longer exist
-    return this.setlists;
+    return Promise.resolve(this.setlists);
   }
 
   public reorderSetlists(setlistIndexes: any) {

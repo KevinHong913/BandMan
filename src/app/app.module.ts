@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Network } from '@ionic-native/network';
 
 import { Backand } from '../providers/backand';
 import { BackandService } from '@backand/angular2-sdk';
@@ -53,6 +54,7 @@ const cloudSettings: CloudSettings = {
     BackandService,
     SetlistService,
     AppConfig,
+    Network,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

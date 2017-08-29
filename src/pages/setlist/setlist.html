@@ -16,6 +16,10 @@
 
 
 <ion-content>
+  <ion-refresher (ionRefresh)="setlistRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-list reorder="true" (ionItemReorder)="reorderSongs($event)">
     <ion-item-sliding #slidingItem class="song-list-item" *ngFor="let song of filteredList; let i = index">
       <button class="song-item" ion-item (click)="goToSong(song, i)">
