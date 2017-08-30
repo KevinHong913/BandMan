@@ -4,13 +4,16 @@ page-login {
     background: url('../assets/img/bg.png');
     background-repeat: repeat-x;
 
+    .scroll-content {
+      overflow: hidden;
+    }
     .logo-img {
       width: 75%;
       margin-bottom: 1px;
     }
 
     .logo-row {
-      padding-top: 50px;
+      padding-top: 30px;
       padding-bottom: 20px;
     }
 

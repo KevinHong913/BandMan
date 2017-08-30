@@ -34,21 +34,22 @@ export class SetlistService {
     if(deep) {
       return this.fetchUserSetlist(this.userId)
       .then( response => {
-        console.log('refresh list', response);
         let fetchList = response.data;
+        let tmpList = this.setlists;
         for(let i = 0, count = fetchList.length ; i < count ; ++i) {
           const index = this.setlists.findIndex((data) => {
             return data.id === fetchList[i].id;
           })
 
           fetchList[i].data = JSON.parse(fetchList[i].data);
-          fetchList[i].isOwner = (this.userId === +fetchList[i].createdBy)
+          fetchList[i].isOwner = true;
           if(index > -1) {
-            this.setlists[index] = fetchList[i];
+            tmpList[index] = fetchList[i];
           } else {
-            this.setlists.unshift(fetchList[i]);
+            tmpList.unshift(fetchList[i]);
           }
         }
+        this.setlists = tmpList;
         this.storage.set('setlists', this.setlists);
         return this.setlists;
       })
@@ -65,7 +66,7 @@ export class SetlistService {
   /**
    * config: {
    *   includeNote: boolean
-   *   
+   *
    * }
    */
   public createSetlist(title: string): any {
@@ -120,7 +121,7 @@ export class SetlistService {
    * If user is setlist author, delete from server
    *
    */
-  
+
   /**
    * Backand:
    * create function for user to get setlist belong to him
@@ -133,7 +134,7 @@ export class SetlistService {
     setlistData.data = JSON.stringify(setlistData.data);
     return this.backandService.object.create('setlist', setlistData)
     .then(res => {
-      console.log('setlist updated', res);
+      // console.log('setlist updated', res);
       this.setlists[index] = setlistData;
       this.setlists[index].id = res.data['__metadata'].id;
       this.setlists[index].data = JSON.parse(setlistData.data); // revert back to json
@@ -144,27 +145,40 @@ export class SetlistService {
   }
 
   public updateSetlist(index: number, setlistData: any): Promise<any> {
+    setlistData.data = JSON.stringify(setlistData.data);
     return this.backandService.object.update('setlist', setlistData.id, setlistData)
     .then(res => {
-      console.log('setlist updated', res);
+      // console.log('setlist updated', res);
       this.setlists[index] = setlistData;
       this.storage.set('setlists', this.setlists);
       return this.setlists[index];
     })
   }
 
+  public resetSetlistToLocal(index: number): void {
+    this.setlists[index].permission = 'L';
+    this.setlists[index].id = -1;
+    this.setlists[index].isOwner = true;
+    this.storage.set('setlists', this.setlists);
+  }
+
   // rename
   public renameSetlist(index: number, setlistId: number, newName: string): Promise<any> {
+    if(this.setlists[index].permission === 'L') {
+      this.setlists[index].title = newName;
+      this.storage.set('setlists', this.setlists);
+      return Promise.resolve(this.setlists[index]);
+    }
 
     let data = {
       title: newName
     };
     return this.backandService.object.update('setlist', this.setlists[index].id, data)
     .then(res => {
-      console.log('object updated');
-      this.setlists[index].data.title = newName;
+      // console.log('object updated');
+      this.setlists[index].title = newName;
       this.storage.set('setlists', this.setlists);
-      return res;
+      return this.setlists[index];
     })
   }
 
@@ -186,7 +200,7 @@ export class SetlistService {
           return response.data;
         })
         .catch(error => {
-          console.log("error", error);
+          // console.log("error", error);
           if(error.status === 417) {
             return {success: false, message: "The setlist Id you provide does not exist"};
           }
@@ -206,14 +220,14 @@ export class SetlistService {
     const setlistId = this.setlists[index].id;
     this.setlists.splice(index, 1);
     this.storage.set('setlists', this.setlists);
-    console.log('[Setlists]: index ' + index + ' removed');
+    // console.log('[Setlists]: index ' + index + ' removed');
 
 
     if(options && options.fromServer) {
       // delete from server
       return this.backandService.object.remove('setlist', setlistId)
       .then(response => {
-        console.log('remove from server', response);
+        // console.log('remove from server', response);
         return this.setlists;
       })
     }
@@ -250,10 +264,10 @@ export class SetlistService {
       const songIndex = this.setlists[index].data.findIndex((obj) => { return obj.id === song.id; });
       if(songIndex  === -1) { // song not exist in setlist
         this.setlists[index].data.push(songObj);
-        console.log('[Setlists]: '+ this.setlists[index].title + ': ' + song.title + ' added');
+        // console.log('[Setlists]: '+ this.setlists[index].title + ': ' + song.title + ' added');
       } else {
         this.setlists[index].data[songIndex] = songObj;
-        console.log('[Setlists]: '+ this.setlists[index].title + ': ' + song.title + ' updated');
+        // console.log('[Setlists]: '+ this.setlists[index].title + ': ' + song.title + ' updated');
       }
       this.storage.set('setlists', this.setlists);
     } else {
@@ -269,7 +283,7 @@ export class SetlistService {
         if(obj.id === song.id) {
           this.setlists[index].data.splice(index, 1, song);
           this.storage.set('setlists', this.setlists);
-          console.log('[Setlists]: '+ song.title + ' updated', this.setlists[index]);
+          // console.log('[Setlists]: '+ song.title + ' updated', this.setlists[index]);
         }
       })
     }
@@ -279,7 +293,7 @@ export class SetlistService {
   public removeSong(index: number, songIndex: number) {
     this.setlists[index].data.splice(songIndex, 1);
     this.storage.set('setlists', this.setlists);
-    console.log('[Setlists]: index ' + songIndex + ' removed');
+    // console.log('[Setlists]: index ' + songIndex + ' removed');
     return this.setlists[index];
   }
 
@@ -287,6 +301,7 @@ export class SetlistService {
     let element = this.setlists[index]['data'][songIndexes.from];
     this.setlists[index].data.splice(songIndexes.from, 1);
     this.setlists[index].data.splice(songIndexes.to, 0, element);
+    this.storage.set('setlist', this.setlists);
   }
 
   public clearSongList(index: number): Promise<any> {

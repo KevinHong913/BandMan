@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, Platform, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { IonicPage, Platform, NavParams, ViewController, AlertController, Events } from 'ionic-angular';
 import { SetlistService } from '../../providers/setlist';
 
 @IonicPage()
@@ -16,13 +16,12 @@ export class SetlistSettingModalComponent {
   isRadioDisabled: boolean;
 
   constructor(private platform: Platform, private navParams: NavParams, private viewCtrl: ViewController,
-              private setlistService: SetlistService, private alertCtrl: AlertController) {
+              private setlistService: SetlistService, private alertCtrl: AlertController,
+              private events: Events) {
     this.setlist = Object.assign({}, navParams.get('setlist'));
     this.isInit = navParams.get('isInit');
     this.index = navParams.get('index');
-    this.isRadioDisabled = (!this.setlist.isOwner && this.setlist.permission === 'R');
-
-    console.log('modal', this.setlist);
+    this.isRadioDisabled = (!this.setlist.isOwner);
   }
 
   shareSetlist() {
@@ -46,22 +45,20 @@ export class SetlistSettingModalComponent {
       buttons: [{
         text: 'Cancel',
         handler: data => {
-          console.log('Cancel delete');
+          // console.log('Cancel delete');
         }
       }, {
         text: 'Yes',
         handler: data => {
-          console.log('Delete clicked', data);
+          // console.log('Delete clicked', data);
           this.setlistService.deleteSetlist(this.index, {fromServer: true})
           .then(response => {
-            this.viewCtrl.dismiss();
+            this.events.publish('setlist:deleteFromServer');
           })
+          this.viewCtrl.dismiss();
         }
       }]
-    }).present()
-    .then(res => {
-      this.dismiss();
-    });
+    }).present();
   }
 
   dismiss() {

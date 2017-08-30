@@ -35,7 +35,7 @@ export class StickyNoteComponent {
       this.content.classList.add('pan'); // the pan class will set content to overflow hidden
 
       if(!this.isResize) {
-        // console.log('pan', event);
+        console.log('pan', event);
         this.note.position.top = event.center.y - this.offsetTop;
         this.note.position.left = event.center.x;
       }
@@ -48,12 +48,12 @@ export class StickyNoteComponent {
   }
 
   onResizeStart(event: ResizeEvent): void {
-    console.log('resize start');
+    // console.log('resize start');
     this.isResize = true;
   }
 
   onResizeEnd(event: ResizeEvent): void {
-    console.log('resize end');
+    // console.log('resize end');
     setTimeout(() => {
       this.note.position.top = event.rectangle.top - this.offsetTop;
       this.note.position.left = event.rectangle.left;
@@ -75,7 +75,7 @@ export class StickyNoteComponent {
   }
 
   onClickEvent(event) {
-    console.log("CLICK");
+    // console.log("CLICK");
     this.isEdit = true;
     this.isDisabled = false;
     setTimeout(() => {this.editTextarea.setFocus()}, 50);

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, AlertController, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController, PopoverController, Loading, LoadingController } from 'ionic-angular';
 import { Song } from '../../models/song';
 import { SetlistService } from '../../providers/setlist';
 import { ItemSliding } from 'ionic-angular';
@@ -10,9 +10,10 @@ import { ItemSliding } from 'ionic-angular';
   templateUrl: 'setlist-list.html',
 })
 export class SetlistListPage {
+  loading: Loading;
   setlists: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController,
               private setlistService: SetlistService, public events: Events,
               public alertCtrl: AlertController, private popoverCtrl: PopoverController) {
   }
@@ -25,16 +26,16 @@ export class SetlistListPage {
   removeSetList(index: number, slidingItem?: ItemSliding): void {
     let prompt = this.alertCtrl.create({
       title: 'Delete Confirm',
-      subTitle: 'Are you sure you want to delete this setlist?',
+      subTitle: 'Are you sure you want to delete this setlist? You can still retrieve it by refreshing or fetch by Id',
       buttons: [{
         text: 'Cancel',
         handler: data => {
-          console.log('Cancel clicked');
+          // console.log('Cancel clicked');
         }
       }, {
         text: 'Delete',
         handler: data => {
-          console.log('Delete clicked', data);
+          // console.log('Delete clicked', data);
           this.setlistService.deleteSetlist(index)
           .then(response => {
             this.setlists = response;
@@ -58,6 +59,13 @@ export class SetlistListPage {
     });
   }
 
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading...',
+    });
+    this.loading.present();
+  }
+
   setlistRefresh(refresher?) {
     let prompt = this.alertCtrl.create({
       title: 'Warning',
@@ -65,14 +73,14 @@ export class SetlistListPage {
       buttons: [{
         text: 'No',
         handler: data => {
-          console.log('Cancel clicked');
+          // console.log('Cancel clicked');
           refresher.complete();
 
         }
       }, {
         text: 'Yes',
         handler: data => {
-          console.log('Yes clicked', data);
+          // console.log('Yes clicked', data);
           this.setlistService.getSetlists(true)
           .then(response => {
             this.setlists = response;
@@ -91,18 +99,22 @@ export class SetlistListPage {
   }
 
   getSetlistById(id: number) {
+    this.showLoading();
     this.setlistService.getSetlistById(id, false)
     .then( response => {
+      this.loading.dismiss();
       if(response.success) {
         this.setlistService.addSetlist(response.data);
       } else {
-        console.log(response);
+        // console.log(response);
         this.alertCtrl.create({
           title: 'Error',
           subTitle: response.message,
           buttons: ['OK']
         }).present();
       }
+    }, error => {
+      this.loading.dismiss();
     });
   }
 
@@ -125,7 +137,7 @@ export class SetlistListPage {
     .then(response => {
       this.setlists = response;
     });
-    console.log('GET setlists', this.setlists);
+    // console.log('GET setlists', this.setlists);
   }
 
   ngOnInit() {

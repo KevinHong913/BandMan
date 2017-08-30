@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class UtilService {
 
   constructor() {
-    console.log('Hello UtilService Provider');
+    // console.log('Hello UtilService Provider');
   }
 
 

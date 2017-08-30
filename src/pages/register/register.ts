@@ -22,7 +22,6 @@ export class RegisterPage {
   confirmPassword: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private backand: BackandService, private alertCtrl: AlertController) {
-    console.log('REGISTER');
   }
 
 
@@ -41,7 +40,7 @@ export class RegisterPage {
       }
     },
       error => {
-        console.log(error);
+        // console.log(error);
         this.showPopup(error.data.error, error.data.error_description);
     });
   }

@@ -16,7 +16,35 @@ export class SetlistPopover {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SetlistPopoverPage');
+    // console.log('ionViewDidLoad SetlistPopoverPage');
+  }
+
+  onRenameEvent(event) {
+    let prompt = this.alertCtrl.create({
+      title: 'Rename',
+      inputs: [
+        {
+          name: 'newName',
+          value: this.setlist.title,
+          placeholder: 'Enter setlist name'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: data => {
+            this.events.publish('setlist:rename', {name: data.newName});
+            this.viewCtrl.dismiss();
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
   onClearAllEvent(event) {
@@ -26,12 +54,12 @@ export class SetlistPopover {
       buttons: [{
         text: 'Cancel',
         handler: data => {
-          console.log('Cancel clear');
+          // console.log('Cancel clear');
         }
       }, {
         text: 'Yes',
         handler: data => {
-          console.log('Clear clicked', data);
+          // console.log('Clear clicked', data);
           this.viewCtrl.dismiss();
           this.events.publish('setlist:clear');
         }
@@ -56,12 +84,12 @@ export class SetlistPopover {
       buttons: [{
         text: 'Cancel',
         handler: data => {
-          console.log('Cancel delete');
+          // console.log('Cancel delete');
         }
       }, {
         text: 'Yes',
         handler: data => {
-          console.log('Delete clicked', data);
+          // console.log('Delete clicked', data);
           this.viewCtrl.dismiss();
           this.events.publish('setlist:delete');
         }

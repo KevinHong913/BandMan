@@ -28,9 +28,13 @@ export class Backand {
   }
 
   getSongById(id: number): Promise<Song> {
-    return this.backandService.object.getOne('songs', id, {deep: true})
+    return this.backandService.object.action.get('songs', 'GetSongById', {songId: id})
     .then( res => {
       return <Song>res.data;
     });
+  }
+
+  getAnnouncementList(): Promise<any> {
+    return this.backandService.object.getList('accouncement');
   }
 }

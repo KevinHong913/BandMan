@@ -24,7 +24,6 @@ export class MorePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad More');
   }
 
   setFontSize(newSize: number): void {

@@ -16,7 +16,7 @@
 
 
 <ion-content>
-  <ion-refresher (ionRefresh)="setlistRefresh($event)">
+  <ion-refresher *ngIf="setlist?.permission !== 'L'" (ionRefresh)="setlistRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 

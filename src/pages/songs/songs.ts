@@ -15,6 +15,7 @@ import { Network } from '@ionic-native/network';
 export class SongsPage {
   loading: Loading;
   songList: Song[];
+  announcementList: any;
   listType = 'songlist';
   currentSongIndex = -1; // start with -1
   filter: string;
@@ -65,6 +66,13 @@ export class SongsPage {
         text: 'OK'
       }]
     }).present();
+  }
+
+  getAnnouncementList(): void {
+    this.backandService.getAnnouncementList()
+    .then(response => {
+      this.announcementList = response.data;
+    })
   }
 
   getSongList(refresher?: any): void {
@@ -157,6 +165,7 @@ export class SongsPage {
   }
 
   ngOnInit() {
+    this.getAnnouncementList();
     this.getSongList();
     this.songChangeEvent();
   }

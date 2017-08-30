@@ -21,6 +21,10 @@
   </ion-refresher>
 
   <ion-list>
+    <ion-item *ngFor="let announcement of announcementList; let j = index">
+      <h2 [innerHtml]="announcement.title"></h2>
+      <p [innerHtml]="announcement.message"></p>
+    </ion-item>
     <ion-item-sliding #slidingItem class="song-list-item" *ngFor="let song of filteredList; let i = index">
       <button class="song-item" ion-item (click)="goToSong(song.id, i)">
         <h2>{{ song.title }}</h2>

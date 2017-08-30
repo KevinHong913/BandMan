@@ -9,7 +9,6 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content>
   <ion-refresher (ionRefresh)="setlistRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -27,7 +26,8 @@
     </ion-item-sliding>
 
     <ion-item *ngIf="setlists?.length === 0">
-      <h2 text-center>The setlist is empty...</h2>
+      <h2 text-center>You have no setlist yet!</h2>
+      <p text-center>Please create one or pull to fetch your setlist from the server!</p>
     </ion-item>
   </ion-list>
 </ion-content>

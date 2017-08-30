@@ -28,7 +28,6 @@ export class SongDetailsPopover {
 
   keyValueChange(key) {
     this.events.publish('song:keyChanged', this.key);
-    console.log("[popover] key: ", this.key);
   }
 
   // what if the user does not have access to the setlist
@@ -52,7 +51,7 @@ export class SongDetailsPopover {
         {
           text: 'Cancel',
           handler: () => {
-            console.log('Add setlist cancelled');
+            // console.log('Add setlist cancelled');
           }
         },
         {

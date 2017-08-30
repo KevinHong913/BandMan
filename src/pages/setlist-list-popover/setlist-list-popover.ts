@@ -23,12 +23,12 @@ export class SetlistListPopover {
       buttons: [{
         text: 'Cancel',
         handler: data => {
-          console.log('Cancel clicked');
+          // console.log('Cancel clicked');
         }
       }, {
         text: 'Save',
         handler: data => {
-          console.log('Saved clicked', data);
+          // console.log('Saved clicked', data);
           this.events.publish('setlist:create', {title: data.title});
           this.viewCtrl.dismiss();
         }
@@ -43,6 +43,7 @@ export class SetlistListPopover {
       inputs: [
         {
           name: 'setlistId',
+          type: 'number',
           placeholder: 'Enter Setlist ID'
         },
       ],

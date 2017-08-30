@@ -24,7 +24,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-list radio-group [(ngModel)]="setlist.permission" [disabled]="isRadioDisabled">
+    <ion-list radio-group [(ngModel)]="setlist.permission">
       <ion-list-header>Privacy</ion-list-header>
       <ion-item>
         <ion-label>Private</ion-label>
@@ -40,7 +40,7 @@
       </ion-item>
     </ion-list>
 
-    <button ion-button *ngIf="setlist.isOwner || (!setlist.isOwner && origPermission === 'E')" (click)="shareSetlist()">{{ +setlist.id > 0 ? "Save" : "Share" }}</button>
+    <button ion-button *ngIf="setlist.isOwner || (!setlist.isOwner && origPermission === 'E')" (click)="shareSetlist()">{{ +setlist.id > 0 ? "Update" : "Share" }}</button>
 
     <button ion-button *ngIf="setlist.isOwner && origPermission !== 'L' " (click)="deleteSetlist()" color="danger">Delete Setlist from server</button>
 </ion-content>
