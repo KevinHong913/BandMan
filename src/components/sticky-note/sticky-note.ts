@@ -35,7 +35,7 @@ export class StickyNoteComponent {
       this.content.classList.add('pan'); // the pan class will set content to overflow hidden
 
       if(!this.isResize) {
-        console.log('pan', event);
+        // console.log('pan', event);
         this.note.position.top = event.center.y - this.offsetTop;
         this.note.position.left = event.center.x;
       }
