@@ -8,6 +8,7 @@ import {
   ToastController
 } from 'ionic-angular';
 import { AppConfig } from '../../providers/config';
+import { Backand } from '../../providers/backand';
 
 @IonicPage()
 @Component({
@@ -16,11 +17,18 @@ import { AppConfig } from '../../providers/config';
 })
 export class MorePage {
   fontSize: number;
+  isAnonUser: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public events: Events, public alertCtrl: AlertController,
-              public appConfig: AppConfig, private toastCtrl: ToastController) {
+              public appConfig: AppConfig, private toastCtrl: ToastController,
+              private backandService: Backand) {
     this.fontSize = appConfig.getFontSize();
+
+    this.backandService.isAnonUser()
+    .then((data: any) => {
+      this.isAnonUser = data;
+    });
   }
 
   ionViewDidLoad() {
@@ -48,6 +56,10 @@ export class MorePage {
         }
       ]
     }).present();
+  }
+
+  login() {
+    this.events.publish('user:logout');
   }
 
   logout(): void {

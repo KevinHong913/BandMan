@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Events, AlertController, PopoverCo
 import { Song } from '../../models/song';
 import { SetlistService } from '../../providers/setlist';
 import { ItemSliding } from 'ionic-angular';
+import { Backand } from '../../providers/backand';
 
 @IonicPage()
 @Component({
@@ -12,9 +13,10 @@ import { ItemSliding } from 'ionic-angular';
 export class SetlistListPage {
   loading: Loading;
   setlists: any[];
+  isAnonUser: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController,
-              private setlistService: SetlistService, public events: Events,
+              private setlistService: SetlistService, public events: Events, private backandService: Backand,
               public alertCtrl: AlertController, private popoverCtrl: PopoverController) {
   }
 
@@ -26,7 +28,7 @@ export class SetlistListPage {
   removeSetList(index: number, slidingItem?: ItemSliding): void {
     let prompt = this.alertCtrl.create({
       title: 'Delete Confirm',
-      subTitle: 'Are you sure you want to delete this setlist? You can still retrieve it by refreshing or fetch by Id',
+      subTitle: 'Are you sure you want to delete this setlist? You can still retrieve it by refreshing or fetch by Id (only if the setlist is uploaded)',
       buttons: [{
         text: 'Cancel',
         handler: data => {
@@ -48,7 +50,7 @@ export class SetlistListPage {
     }
   }
 
-  reorderSetList(indexes) {
+  reorderSetlists(indexes) {
     this.setlistService.reorderSetlists(indexes);
   }
 
@@ -57,6 +59,10 @@ export class SetlistListPage {
     popover.present({
       ev: event
     });
+  }
+
+  login() {
+    this.events.publish('user:logout');
   }
 
   showLoading() {
@@ -74,7 +80,9 @@ export class SetlistListPage {
         text: 'No',
         handler: data => {
           // console.log('Cancel clicked');
-          refresher.complete();
+          if(refresher) {
+            refresher.complete();
+          }
 
         }
       }, {
@@ -143,6 +151,11 @@ export class SetlistListPage {
   ngOnInit() {
     this.subCreateSetlist();
     this.subFetchSetlist();
+
+    this.backandService.isAnonUser()
+    .then((data: any) => {
+      this.isAnonUser = data;
+    });
   }
 
 }

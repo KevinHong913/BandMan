@@ -10,7 +10,7 @@ import { Song } from '../models/song';
 export class Backand {
   // auth_token: {header_name: string, header_value: string} = {header_name: 'AnonymousToken', header_value: '7df1cf16-b2a3-4c99-bad5-43a62485f28a'};
   // api_url: string = 'https://api.backand.com';
-  // app_name: string = 'frccworship';
+  // app_name: string = 'bandman';
 
   constructor(public http: Http, private backandService: BackandService) {}
 
@@ -19,6 +19,13 @@ export class Backand {
   //   authHeader.append(this.auth_token.header_name, this.auth_token.header_value);
   //   return authHeader;
   // }
+
+  isAnonUser(): Promise<any> {
+    return this.backandService.user.getUsername()
+    .then(res => {
+      return (res.data === 'Guest');
+    })
+  }
 
   getSongList(): Promise<Song[]> {
     return this.backandService.query.post('GetSongName', {})

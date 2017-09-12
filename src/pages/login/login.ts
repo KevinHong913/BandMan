@@ -10,10 +10,8 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class LoginPage {
   loading: Loading;
-  // username: string = '';
-  // password: string = '';
-  username: string = 'jesus.christ@heaven.gov';
-  password: string = 'godisgood';
+  username: string = '';
+  password: string = '';
   auth_type:string = 'Token';
   is_auth_error:boolean = false;
   auth_status:string = null;
@@ -53,6 +51,21 @@ export class LoginPage {
 
   createAccount() {
     this.navCtrl.push('RegisterPage');
+  }
+
+  anonLogin() {
+    this.useAnonymousAuth();
+  }
+
+  useAnonymousAuth() {
+    this.backand.useAnonymousAuth()
+    .then((data) => {
+      this.auth_status = 'OK';
+      this.is_auth_error = false;
+      this.auth_type = 'Anonymous';
+      this.loggedInUser = 'Anonymous';
+      this.navCtrl.setRoot(TabsPage);
+    });
   }
 
   login() {

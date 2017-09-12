@@ -65,7 +65,15 @@ page-login {
 
     .signup-col {
       margin: 0px 16px 0px 16px;
-      padding-bottom: 20px;
+    }
+
+    .anon-col {
+      margin: 0 16px;
+
+      .guest-login-btn {
+        background: $theme-dark-dark-green;
+        color: $color-white;
+      }
     }
 
     .submit-btn {

@@ -2,7 +2,7 @@
   <ion-navbar class="bm-navbar" color="primary">
     <ion-title>Setlist</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="presentNewsetlistPopover($event)">
+      <button ion-button icon-only (click)="presentNewsetlistPopover($event)" [disabled]="isAnonUser">
         <ion-icon name="add-circle"></ion-icon>
       </button>
     </ion-buttons>
@@ -10,7 +10,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-refresher (ionRefresh)="setlistRefresh($event)">
+
+  <div class="disable-overlay" *ngIf="isAnonUser">
+    <h3 class="disable-overaly-text">Please login in order to use setlist feature.</h3>
+    <button ion-button (click)="login()" class="disable-overlay-btn">   Login   </button>
+  </div>
+
+  <ion-refresher (ionRefresh)="setlistRefresh($event)" *ngIf="!isAnonUser">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 

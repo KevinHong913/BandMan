@@ -36,8 +36,11 @@
 
   <ion-list>
     <ion-list-header>ACCOUNT</ion-list-header>
-    <ion-item>
+    <ion-item *ngIf="!isAnonUser">
       <span (click)="logout()" >Logout</span>
+    </ion-item>
+    <ion-item *ngIf="isAnonUser">
+      <span (click)="login()" >Login</span>
     </ion-item>
   </ion-list>
 </ion-content>
