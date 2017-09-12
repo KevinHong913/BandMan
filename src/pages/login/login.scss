@@ -15,6 +15,10 @@ page-login {
     .logo-row {
       padding-top: 30px;
       padding-bottom: 20px;
+
+      @media screen and (max-height: 668px) {
+        padding: 0;
+      }
     }
 
     .app-title {
@@ -47,6 +51,10 @@ page-login {
           margin-top: 0;
         }
       }
+
+      @media screen and (max-height: 569px) {
+        margin: 0 auto;
+      }
     }
 
     ion-item, .item-inner, .input-wrapper {
@@ -61,6 +69,20 @@ page-login {
 
     ion-row {
       text-align: center;
+    }
+
+    .logo-col {
+      margin-top: 20%;
+
+      @media screen and (max-height: 769px) and (min-width: 1000px) {
+        margin-top: 5%;
+      }
+
+      @media screen and (max-height: 569px) {
+        margin-top: 5%;
+      }
+
+
     }
 
     .signup-col {
@@ -116,3 +138,6 @@ page-login {
     }
   }
 }
+
+
+

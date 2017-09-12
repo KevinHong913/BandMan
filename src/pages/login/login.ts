@@ -123,6 +123,7 @@ export class LoginPage {
   }
 
   ngOnInit() {
+    this.events.unsubscribe('user:logout');
     this.events.subscribe('user:logout', () => {
       this.logout();
     });
