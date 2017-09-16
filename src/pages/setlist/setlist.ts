@@ -48,7 +48,7 @@ export class SetlistPage {
   }
 
   removeFromSetlist(index: number, slidingItem: ItemSliding): void {
-    // this.setlist = this.setlistService.removeSong(index);
+    this.setlist = this.setlistService.removeSong(this.setlistIndex, index);
     slidingItem.close();
   }
 

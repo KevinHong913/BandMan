@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, Platform, NavParams, ViewController, AlertController, Events } from 'ionic-angular';
+import { IonicPage, Platform, NavParams, Loading, LoadingController, ViewController, AlertController, Events } from 'ionic-angular';
 import { SetlistService } from '../../providers/setlist';
 
 @IonicPage()
@@ -9,6 +9,7 @@ import { SetlistService } from '../../providers/setlist';
 })
 export class SetlistSettingModalComponent {
 
+  loading: Loading;
   setlist: any;
   index: number;
   isInit: boolean = true;
@@ -17,22 +18,31 @@ export class SetlistSettingModalComponent {
 
   constructor(private platform: Platform, private navParams: NavParams, private viewCtrl: ViewController,
               private setlistService: SetlistService, private alertCtrl: AlertController,
-              private events: Events) {
+              private events: Events, public loadingCtrl: LoadingController) {
     this.setlist = Object.assign({}, navParams.get('setlist'));
     this.isInit = navParams.get('isInit');
     this.index = navParams.get('index');
     this.isRadioDisabled = (!this.setlist.isOwner);
   }
 
+  createLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Uploading...',
+    });
+  }
+
   shareSetlist() {
+    this.loading.present();
     if( +this.setlist.id <= 0 ) {
       this.setlistService.uploadSetlist(this.index, this.setlist)
       .then( response => {
+        this.loading.dismiss();
         this.showAlert(response.title + ' has been uploaded with the ID ' + response.id);
       });
     } else {
       this.setlistService.updateSetlist(this.index, this.setlist)
       .then( response => {
+        this.loading.dismiss();
         this.showAlert(response.title + ' has been updated.');
       })
     }
@@ -55,7 +65,7 @@ export class SetlistSettingModalComponent {
           .then(response => {
             this.events.publish('setlist:deleteFromServer');
           })
-          this.viewCtrl.dismiss();
+          this.dismiss();
         }
       }]
     }).present();
@@ -77,6 +87,7 @@ export class SetlistSettingModalComponent {
   }
 
   ngOnInit() {
+    this.createLoading();
     this.origPermission = this.setlist.permission;
   }
 

@@ -40,7 +40,6 @@ export class SetlistService {
           const index = this.setlists.findIndex((data) => {
             return data.id === fetchList[i].id;
           })
-
           fetchList[i].data = JSON.parse(fetchList[i].data);
           fetchList[i].isOwner = true;
           if(index > -1) {
@@ -149,6 +148,7 @@ export class SetlistService {
     return this.backandService.object.update('setlist', setlistData.id, setlistData)
     .then(res => {
       // console.log('setlist updated', res);
+      setlistData.data = JSON.parse(setlistData.data);
       this.setlists[index] = setlistData;
       this.storage.set('setlists', this.setlists);
       return this.setlists[index];
@@ -197,6 +197,7 @@ export class SetlistService {
           if(response.data.success) {
             response.data.data.isOwner = (this.userId === +response.data.createdBy)
           }
+          response.data.data = JSON.parse(response.data.data);
           return response.data;
         })
         .catch(error => {
