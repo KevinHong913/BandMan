@@ -28,6 +28,12 @@ export class StickyNoteComponent {
   }
 
   ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
+    const element = this.editTextarea['_elementRef'].nativeElement.getElementsByClassName("text-input")[0];
+    element.style.height = (this.note.height - 10) + 'px';
   }
 
   onPanEvent(event) {
@@ -59,9 +65,7 @@ export class StickyNoteComponent {
       this.note.position.left = event.rectangle.left;
 
       var element = this.editTextarea['_elementRef'].nativeElement.getElementsByClassName("text-input")[0];
-      // var scrollHeight = element.scrollHeight;
       element.style.height = event.rectangle.height + 'px';
-      // this.editTextarea['_elementRef'].nativeElement.style.height = (scrollHeight + 16) + 'px';
     }, 50);
 
     this.note.width = event.rectangle.width;
