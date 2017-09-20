@@ -78,6 +78,7 @@ export class SetlistListPage {
       subTitle: 'This action will fetch the setlist you own and overwrite the duplicated ones. Are you sure you want to continue?',
       buttons: [{
         text: 'No',
+        role: 'cancel',
         handler: data => {
           // console.log('Cancel clicked');
           if(refresher) {

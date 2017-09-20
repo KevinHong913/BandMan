@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Note } from '../../models/note';
 import { Position } from '../../models/position';
 import { AbsoluteDragDirective } from '../../directives/absolute-drag/absolute-drag';
@@ -57,6 +57,11 @@ export class StickyNoteComponent {
     setTimeout(() => {
       this.note.position.top = event.rectangle.top - this.offsetTop;
       this.note.position.left = event.rectangle.left;
+
+      var element = this.editTextarea['_elementRef'].nativeElement.getElementsByClassName("text-input")[0];
+      // var scrollHeight = element.scrollHeight;
+      element.style.height = event.rectangle.height + 'px';
+      // this.editTextarea['_elementRef'].nativeElement.style.height = (scrollHeight + 16) + 'px';
     }, 50);
 
     this.note.width = event.rectangle.width;

@@ -72,6 +72,7 @@ export class SetlistPage {
       subTitle: 'This action will overwrite your existing setlist. Are you sure you want to continue?',
       buttons: [{
         text: 'Cancel',
+        role: 'cancel',
         handler: data => {
           // console.log('Cancel clicked');
           refresher.complete();
@@ -118,10 +119,10 @@ export class SetlistPage {
   subSongChangeEvent(): void {
     this.events.unsubscribe('song:change');
     this.events.subscribe('song:change', (data) => {
-      if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.setlist.length - 1) {
+      if(data.listType === this.listType && (this.currentSongIndex + data.direction) >= 0 && (this.currentSongIndex + data.direction) <= this.setlist.data.length - 1) {
         this.currentSongIndex += data.direction;
         const directionStr = data.direction > 0 ? 'forward' : 'back';
-        this.navToSongDetail(this.setlist[this.currentSongIndex].id, this.listType, this.setlist[this.currentSongIndex], {direction: directionStr} );
+        this.navToSongDetail(this.setlist.data[this.currentSongIndex].id, this.listType, this.setlist.data[this.currentSongIndex], {direction: directionStr} );
         this.navCtrl.remove(data.viewIndex);
       }
     });
